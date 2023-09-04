@@ -4,43 +4,63 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
+import unsiq.mtqmn23.jadda.presentation.navigation.Screen
+import unsiq.mtqmn23.jadda.presentation.screen.onboarding.OnBoardingScreen
+import unsiq.mtqmn23.jadda.presentation.screen.splash.SplashScreen
 import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             JaddaTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    val navController = rememberNavController()
+                    Scaffold(
+                        modifier = Modifier.fillMaxSize()
+                    ) { contentPadding ->
+                        NavHost(
+                            modifier = Modifier.padding(contentPadding),
+                            navController = navController,
+                            startDestination = Screen.Splash.route,
+                        ) {
+                            composable(Screen.Splash.route) {
+                                SplashScreen(
+                                    onTimeOut = {
+                                        navController.navigate(Screen.OnBoarding.route) {
+                                            popUpTo(Screen.Splash.route) {
+                                                inclusive = true
+                                            }
+                                        }
+                                    }
+                                )
+                            }
+                            composable(Screen.OnBoarding.route) {
+                                OnBoardingScreen(
+                                    navigateToLogin = {
+
+                                    }
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    JaddaTheme {
-        Greeting("Android")
     }
 }

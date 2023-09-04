@@ -1,20 +1,27 @@
 package unsiq.mtqmn23.jadda.presentation.ui.theme
 
 import androidx.compose.material3.Typography
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
+import unsiq.mtqmn23.jadda.R
+
+val poppinsFamily = FontFamily(
+    Font(R.font.poppins_light, FontWeight.Light),
+    Font(R.font.poppins_regular, FontWeight.Normal),
+    Font(R.font.poppins_medium, FontWeight.Medium),
+    Font(R.font.poppins_semi_bold, FontWeight.SemiBold),
+)
 
 // Set of Material typography styles to start with
 val Typography = Typography(
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
-    )
+//    bodyLarge = TextStyle(
+//        fontFamily = FontFamily.Default,
+//        fontWeight = FontWeight.Normal,
+//        fontSize = 16.sp,
+//        lineHeight = 24.sp,
+//        letterSpacing = 0.5.sp
+//    )
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
@@ -31,4 +38,35 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     */
+    headlineMedium = Typography().headlineMedium.copy(
+        fontFamily = poppinsFamily
+    ),
+    bodyMedium = Typography().bodyMedium.copy(
+        fontFamily = poppinsFamily
+    ),
+    displaySmall = Typography().displaySmall.copy(
+        fontFamily = poppinsFamily
+    ),
+    headlineSmall = Typography().headlineSmall.copy(
+        fontFamily = poppinsFamily
+    ),
+    titleMedium = Typography().titleMedium.copy(
+        fontFamily = poppinsFamily
+    ),
+    bodyLarge = Typography().bodyLarge.copy(
+        fontFamily = poppinsFamily
+    ),
+    titleLarge = Typography().titleLarge.copy(
+        fontFamily = poppinsFamily
+    ),
+    labelSmall = Typography().labelSmall.copy(
+        fontFamily = poppinsFamily
+    ),
+    titleSmall = Typography().titleSmall.copy(
+        fontFamily = poppinsFamily
+    ),
+    labelLarge = Typography().labelLarge.copy(
+        fontFamily = poppinsFamily
+    )
 )
+
