@@ -181,7 +181,7 @@ fun ProfileContent() {
                         Badge(
                             containerColor = Color.Yellow,
                             modifier = Modifier
-                                .border(2.dp, Color.Gray, CircleShape)
+                                .border(2.dp, Color.White.copy(alpha = 0.8f), CircleShape)
                                 .height(32.dp)
                                 .width(32.dp)
                         ) {
