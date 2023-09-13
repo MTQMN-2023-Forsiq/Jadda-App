@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -176,24 +177,22 @@ fun ProfileContent() {
                 modifier = Modifier
                     .padding(0.dp, 0.dp, 36.dp, 0.dp)
             ) {
-                BadgedBox(
-                    badge = {
-                        Badge(
-                            containerColor = Color.Yellow,
-                            modifier = Modifier
-                                .border(2.dp, Color.White.copy(alpha = 0.8f), CircleShape)
-                                .height(32.dp)
-                                .width(32.dp)
-                        ) {
-                            Text(
-                                text = "5",
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.Black,
-                                color = Color.White
-                            )
-                        }
-                    },
-                ) {
+                Box{
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_ranking_number),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .height(50.dp)
+                            .width(50.dp)
+                            .align(Alignment.Center)
+                    )
+                    Text(
+                        text = "5",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Black,
+                        color = Color.White,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
                 }
             }
         }
