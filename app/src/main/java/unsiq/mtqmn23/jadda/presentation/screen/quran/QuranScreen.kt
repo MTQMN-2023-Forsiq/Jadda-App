@@ -1,6 +1,6 @@
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
@@ -40,8 +40,8 @@ fun QuranScreen() {
                 onSearchDisplayClosed = {}
             )
             val items = (1..20).toList()
-            LazyColumn{
-                items(items.size){item ->
+            LazyColumn {
+                items(items.size) { item ->
                     Surah()
                 }
             }
@@ -185,52 +185,59 @@ fun ExpandedSearchView(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Surah(){
-    Row(
-        modifier = Modifier.padding(14.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        Column {
-            Box{
-                Image(
-                    painter = painterResource(id = R.drawable.ic_surah_number),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .height(50.dp)
-                        .width(50.dp)
-                        .align(Alignment.Center)
+fun Surah() {
+    Box(
+       modifier = Modifier.clickable{
+
+       },
+    ) {
+        Row(
+            modifier = Modifier.padding(14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column {
+                Box {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_surah_number),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .height(50.dp)
+                            .width(50.dp)
+                            .align(Alignment.Center)
+                    )
+                    Text(
+                        text = "1",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Black,
+                        color = Color.White,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = "Al-Fatihah",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Medium
                 )
                 Text(
-                    text = "1",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Black,
-                    color = Color.White,
-                    modifier = Modifier.align(Alignment.Center)
+                    text = "Makiyyah - Pembuka",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Light
                 )
             }
-        }
-        Spacer(modifier = Modifier.width(8.dp))
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            Text(
-                text = "Al-Fatihah",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Medium
-            )
-            Text(
-                text = "Makiyyah - Pembuka",
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Light
-            )
-        }
-        Column {
-            Text(
-                text = "الفاتحة",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-            )
+            Column {
+                Text(
+                    text = "الفاتحة",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
         }
     }
 }
