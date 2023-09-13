@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
                             composable(Screen.Splash.route) {
                                 SplashScreen(
                                     onTimeOut = {
-                                        navController.navigate(Screen.Login.route) {
+                                        navController.navigate(Screen.OnBoarding.route) {
                                             popUpTo(Screen.Splash.route) {
                                                 inclusive = true
                                             }
@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
                             composable(Screen.OnBoarding.route) {
                                 OnBoardingScreen(
                                     navigateToLogin = {
-
+                                        navController.navigate(Screen.Login.route)
                                     }
                                 )
                             }
