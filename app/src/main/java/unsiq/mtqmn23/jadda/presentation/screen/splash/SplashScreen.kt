@@ -51,8 +51,8 @@ fun SplashScreen(
         }
         onDispose {
             systemUiController.apply {
-                setStatusBarColor(color = Color.White)
-                setNavigationBarColor(color = Color.White)
+//                setStatusBarColor(color = Color.White)
+//                setNavigationBarColor(color = Color.White)
             }
         }
     }

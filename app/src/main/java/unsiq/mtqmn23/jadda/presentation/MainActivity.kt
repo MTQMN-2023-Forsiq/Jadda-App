@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import unsiq.mtqmn23.jadda.presentation.navigation.Screen
+import unsiq.mtqmn23.jadda.presentation.screen.auth.login.LoginScreen
 import unsiq.mtqmn23.jadda.presentation.screen.onboarding.OnBoardingScreen
 import unsiq.mtqmn23.jadda.presentation.screen.splash.SplashScreen
 import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
@@ -42,7 +43,7 @@ class MainActivity : ComponentActivity() {
                             composable(Screen.Splash.route) {
                                 SplashScreen(
                                     onTimeOut = {
-                                        navController.navigate(Screen.OnBoarding.route) {
+                                        navController.navigate(Screen.Login.route) {
                                             popUpTo(Screen.Splash.route) {
                                                 inclusive = true
                                             }
@@ -56,6 +57,9 @@ class MainActivity : ComponentActivity() {
 
                                     }
                                 )
+                            }
+                            composable(Screen.Login.route) {
+                                LoginScreen()
                             }
                         }
                     }
