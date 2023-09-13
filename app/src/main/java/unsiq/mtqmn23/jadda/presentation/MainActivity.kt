@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
 import unsiq.mtqmn23.jadda.presentation.navigation.Screen
 import unsiq.mtqmn23.jadda.presentation.screen.auth.login.LoginScreen
@@ -23,6 +24,7 @@ import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalPagerApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
