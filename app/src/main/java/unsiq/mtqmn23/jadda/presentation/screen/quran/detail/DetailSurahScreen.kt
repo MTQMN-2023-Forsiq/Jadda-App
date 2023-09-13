@@ -156,6 +156,8 @@ fun Ayat() {
         Text(
             text = "Dengan nama Allah yang maha pengasih lagi maha penyayang.",
             fontStyle = FontStyle.Italic,
+            modifier = Modifier.fillMaxWidth(),
+            fontSize = 12.sp,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Divider(color = Gray.copy(alpha = 0.5f), thickness = 1.dp)
