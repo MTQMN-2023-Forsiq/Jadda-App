@@ -12,9 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
@@ -31,9 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -44,7 +40,6 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import unsiq.mtqmn23.jadda.R
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Black
-import unsiq.mtqmn23.jadda.presentation.ui.theme.Gray
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
 import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
 
@@ -85,7 +80,7 @@ fun ProfileScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ProfileContent() {
     Spacer(modifier = Modifier.height(60.dp))
@@ -95,15 +90,19 @@ fun ProfileContent() {
             .fillMaxWidth()
             .padding(14.dp)
     ) {
-        Image(
-            painter = painterResource(R.drawable.ic_avatar_sample),
-            contentDescription = "avatar",
-            contentScale = ContentScale.Crop,
+        val path = "https://qive.rumahdigitalit.com/assets/images/avatar.png"
+        GlideImage(
+            model = path,
+            contentDescription = "Image",
             modifier = Modifier
-                .size(64.dp)
-                .clip(CircleShape)
-                .border(2.dp, Gray, CircleShape)
-        )
+                .height(64.dp)
+                .width(64.dp)
+        ){
+            it
+                .error(R.drawable.ic_avatar_lazy)
+                .placeholder(R.drawable.ic_avatar_lazy)
+                .load(path)
+        }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = "Sumpeno",
@@ -177,20 +176,15 @@ fun ProfileContent() {
                 modifier = Modifier
                     .padding(0.dp, 0.dp, 36.dp, 0.dp)
             ) {
-                Box{
-                    val path = "https://qive.rumahdigitalit.com/assets/images/avatar.png"
-                    GlideImage(
-                        model = path,
-                        contentDescription = "Image",
+                Box {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_ranking_number),
+                        contentDescription = null,
                         modifier = Modifier
                             .height(50.dp)
                             .width(50.dp)
-                    ){
-                        it
-                            .error(R.drawable.ic_avatar_lazy)
-                            .placeholder(R.drawable.ic_avatar_lazy)
-                            .load(path)
-                    }
+                            .align(Alignment.Center)
+                    )
                     Text(
                         text = "5",
                         fontSize = 24.sp,
@@ -202,9 +196,7 @@ fun ProfileContent() {
             }
         }
     }
-    Column(
-        modifier = Modifier.padding(14.dp)
-    ) {
+    Column{
         IconTextButton(
             text = "Leaderboard",
             icon = {
@@ -218,7 +210,6 @@ fun ProfileContent() {
 
             }
         )
-        Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
             text = "Tentang Kami",
             icon = {
@@ -232,7 +223,6 @@ fun ProfileContent() {
 
             }
         )
-        Spacer(modifier = Modifier.height(16.dp))
         IconTextButton(
             text = "Logout",
             icon = {
@@ -256,12 +246,12 @@ fun IconTextButton(
     onClick: () -> Unit
 ) {
     Box(
-        modifier = Modifier.clickable{
-
-        }
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick },
     ) {
         Row(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(20.dp,16.dp,8.dp,16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             icon()
@@ -269,7 +259,6 @@ fun IconTextButton(
             Text(
                 text = text,
                 style = MaterialTheme.typography.button.copy(color = Black),
-                modifier = Modifier.clickable(onClick = onClick),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold
             )
