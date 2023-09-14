@@ -120,4 +120,7 @@ dependencies {
 
     //Indicators
     implementation("com.google.accompanist:accompanist-pager-indicators:0.12.0")
+
+    //Glide
+    implementation("com.github.bumptech.glide:compose:1.0.0-alpha.1")
 }
