@@ -4,48 +4,47 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import unsiq.mtqmn23.jadda.presentation.screen.auth.components.BackgroundAuth
 import unsiq.mtqmn23.jadda.presentation.screen.auth.components.CardAuth
+import unsiq.mtqmn23.jadda.presentation.screen.auth.components.SpannableText
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
 import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
 
 @Composable
-fun LoginScreen() {
-    LoginContent()
+fun LoginScreen(
+    navigateToRegister: () -> Unit,
+    navigateToHome: () -> Unit,
+) {
+    LoginContent(
+        navigateToRegister = navigateToRegister,
+        navigateToHome = navigateToHome
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginContent(modifier: Modifier = Modifier) {
-    val systemUiController = rememberSystemUiController()
+fun LoginContent(
+    modifier: Modifier = Modifier,
+    navigateToRegister: () -> Unit,
+    navigateToHome: () -> Unit,
+) {
 
-    DisposableEffect(Unit) {
-        systemUiController.apply {
-            setStatusBarColor(color = Green)
-            setNavigationBarColor(color = Green)
-        }
-        onDispose {
-            systemUiController.apply {
-                setStatusBarColor(color = Color.White)
-                setNavigationBarColor(color = Color.White)
-            }
-        }
-    }
-
-    ConstraintLayout(modifier = modifier.fillMaxSize()) {
+    ConstraintLayout(
+        modifier = modifier.fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
         val (bgGreen, cvForm, tvRegister) = createRefs()
 
         BackgroundAuth(
@@ -81,7 +80,7 @@ fun LoginContent(modifier: Modifier = Modifier) {
                 )
                 Text(
                     text = "Lupa password?",
-                    style = MaterialTheme.typography.titleMedium.copy(
+                    style = MaterialTheme.typography.bodyMedium.copy(
                         color = Green
                     ),
                     modifier = Modifier.padding(16.dp)
@@ -90,7 +89,7 @@ fun LoginContent(modifier: Modifier = Modifier) {
                 )
             },
             titleButton = "Login",
-            onMainButtonClick = {},
+            onMainButtonClick = { navigateToHome() },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
@@ -100,6 +99,18 @@ fun LoginContent(modifier: Modifier = Modifier) {
                     end.linkTo(parent.end)
                 }
         )
+
+        SpannableText(
+            modifier = Modifier.constrainAs(tvRegister) {
+                bottom.linkTo(parent.bottom, margin = 24.dp)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }.clickable {
+                navigateToRegister()
+            },
+            text1 = "Belum mempunyai akun? ",
+            text2 = "Daftar"
+        )
     }
 }
 
@@ -107,6 +118,9 @@ fun LoginContent(modifier: Modifier = Modifier) {
 @Composable
 fun LoginContentPreview() {
     JaddaTheme {
-        LoginContent()
+        LoginContent(
+            navigateToRegister = {},
+            navigateToHome = {}
+        )
     }
 }
