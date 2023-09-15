@@ -24,6 +24,7 @@ import androidx.compose.material.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 import unsiq.mtqmn23.jadda.presentation.screen.onboarding.model.OnBoardingData
 import unsiq.mtqmn23.jadda.presentation.screen.onboarding.model.OnBoardingItem
@@ -53,6 +55,20 @@ fun OnBoardingScreen(
     navigateToLogin: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
+    val systemUiController = rememberSystemUiController()
+
+    DisposableEffect(Unit) {
+        systemUiController.apply {
+            setStatusBarColor(color = Color.White)
+            setNavigationBarColor(color = Color.White)
+        }
+        onDispose {
+            systemUiController.apply {
+                setStatusBarColor(color = Green)
+                setNavigationBarColor(color = Green)
+            }
+        }
+    }
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -112,7 +128,6 @@ fun OnBoardingContent(
         Image(painter = painterResource(id = item.image), contentDescription = null)
         Column(
             modifier = Modifier
-                .height(336.dp)
                 .padding(14.dp)
                 .background(
                     color = BlueSky,
@@ -157,6 +172,7 @@ fun OnBoardingContent(
                     fontWeight = FontWeight.SemiBold
                 )
             }
+            Spacer(Modifier.height(16.dp))
         }
     }
 }
@@ -165,7 +181,7 @@ fun OnBoardingContent(
 fun BoxScope.Indicators(size: Int, index: Int) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
         modifier = Modifier.align(Alignment.CenterStart)
     ) {
         repeat(size) {
@@ -178,12 +194,13 @@ fun BoxScope.Indicators(size: Int, index: Int) {
 fun Indicator(isSelected: Boolean) {
     val width = animateDpAsState(
         targetValue = if (isSelected) 25.dp else 10.dp,
-        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy)
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
+        label = ""
     )
 
     Box(
         modifier = Modifier
-            .height(10.dp)
+            .height(8.dp)
             .width(width.value)
             .clip(CircleShape)
             .background(

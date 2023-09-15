@@ -17,6 +17,8 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
 import unsiq.mtqmn23.jadda.presentation.navigation.Screen
 import unsiq.mtqmn23.jadda.presentation.screen.auth.login.LoginScreen
+import unsiq.mtqmn23.jadda.presentation.screen.auth.register.RegisterScreen
+import unsiq.mtqmn23.jadda.presentation.screen.home.HomeScreen
 import unsiq.mtqmn23.jadda.presentation.screen.onboarding.OnBoardingScreen
 import unsiq.mtqmn23.jadda.presentation.screen.splash.SplashScreen
 import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
@@ -61,7 +63,26 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             composable(Screen.Login.route) {
-                                LoginScreen()
+                                LoginScreen(
+                                    navigateToRegister = {
+                                        navController.navigate(Screen.Register.route)
+                                    },
+                                    navigateToHome = {
+                                        navController.navigate(Screen.Home.route) {
+
+                                        }
+                                    }
+                                )
+                            }
+                            composable(Screen.Register.route) {
+                                RegisterScreen(
+                                    navigateUp = {
+                                        navController.navigateUp()
+                                    }
+                                )
+                            }
+                            composable(Screen.Home.route) {
+                                HomeScreen()
                             }
                         }
                     }
