@@ -62,6 +62,9 @@ val Typography = Typography(
     labelSmall = Typography().labelSmall.copy(
         fontFamily = poppinsFamily
     ),
+    labelMedium = Typography().labelMedium.copy(
+        fontFamily = poppinsFamily
+    ),
     titleSmall = Typography().titleSmall.copy(
         fontFamily = poppinsFamily
     ),

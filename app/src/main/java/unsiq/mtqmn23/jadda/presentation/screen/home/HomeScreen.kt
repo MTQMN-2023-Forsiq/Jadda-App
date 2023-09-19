@@ -13,14 +13,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MyLocation
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,19 +37,26 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import unsiq.mtqmn23.jadda.R
+import unsiq.mtqmn23.jadda.domain.model.tajweed.TajweedDataItem
 import unsiq.mtqmn23.jadda.presentation.components.RoundedButton
+import unsiq.mtqmn23.jadda.presentation.screen.home.components.ItemFeature
+import unsiq.mtqmn23.jadda.presentation.screen.home.components.ItemMainFeature
+import unsiq.mtqmn23.jadda.presentation.screen.home.components.ItemTajweed
+import unsiq.mtqmn23.jadda.presentation.screen.home.components.RowType
 import unsiq.mtqmn23.jadda.presentation.ui.theme.BlueSky
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
 
 @Composable
-fun HomeScreen() {
-    HomeContent()
-}
-
-@Composable
-fun HomeContent(modifier: Modifier = Modifier) {
+fun HomeScreen(
+    snackbarHostState: SnackbarHostState,
+    viewModel: HomeViewModel = hiltViewModel()
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val scope = rememberCoroutineScope()
     val systemUiController = rememberSystemUiController()
 
     SideEffect {
@@ -53,6 +66,16 @@ fun HomeContent(modifier: Modifier = Modifier) {
         }
     }
 
+    HomeContent(
+        listTajweed = state.listTajweed
+    )
+}
+
+@Composable
+fun HomeContent(
+    modifier: Modifier = Modifier,
+    listTajweed: SnapshotStateList<TajweedDataItem>,
+) {
     LazyColumn(
         modifier = modifier
     ) {
@@ -64,7 +87,6 @@ fun HomeContent(modifier: Modifier = Modifier) {
         }
         item {
             HomeCard(
-                modifier = Modifier.padding(16.dp),
                 myLocationName = "Wonosobo",
                 nearPrayName = "Dzuhur",
                 nearPrayTime = "11:34",
@@ -73,7 +95,50 @@ fun HomeContent(modifier: Modifier = Modifier) {
                 asharTime = "15:27",
                 maghribTime = "17:56",
                 isyaTime = "18:55",
+                modifier = Modifier
+                    .padding(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 16.dp),
             )
+        }
+        item {
+            FeatureCard(
+                navigateToTafsir = {},
+                navigateToCompass = {},
+                navigateToHadits = {},
+                navigateToPracticeSalat = {},
+                navigateToRanking = {},
+                navigateToTajweedDetection = {},
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+            Spacer(Modifier.height(16.dp))
+        }
+        when (listTajweed.size) {
+            1 -> listTajweed.first().let {
+                item {
+                    ItemTajweed(
+                        title = it.title.toString(),
+                        icon = it.icon ?: "",
+                        type = RowType.SINGLE,
+                        onClick = {}
+                    )
+                }
+            }
+            else -> {
+                itemsIndexed(listTajweed) { index, item ->
+                    val rowType = when (index) {
+                        0 -> RowType.TOP
+                        listTajweed.lastIndex -> RowType.BOTTOM
+                        else -> RowType.MIDDLE
+                    }
+                    ItemTajweed(
+                        title = item.title.toString(),
+                        icon = item.icon ?: "",
+                        type = rowType,
+                        onClick = {},
+                        modifier = Modifier
+                            .padding(vertical = 0.dp, horizontal = 16.dp)
+                    )
+                }
+            }
         }
     }
 }
@@ -82,7 +147,7 @@ fun HomeContent(modifier: Modifier = Modifier) {
 fun HomeAppBar(
     date: String,
     dateHijri: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -247,7 +312,63 @@ fun FeatureCard(
                 .padding(16.dp)
                 .align(Alignment.Center)
         ) {
-
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceAround,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                ItemFeature(
+                    onClick = navigateToTafsir,
+                    title = "Tafsir",
+                    icon = ImageVector.vectorResource(R.drawable.ic_tafsir),
+                )
+                ItemFeature(
+                    onClick = navigateToCompass,
+                    title = "Kiblat",
+                    icon = ImageVector.vectorResource(R.drawable.ic_kiblah),
+                )
+                ItemFeature(
+                    onClick = navigateToHadits,
+                    title = "Hadits",
+                    icon = ImageVector.vectorResource(R.drawable.ic_hadits),
+                )
+                ItemFeature(
+                    onClick = navigateToRanking,
+                    title = "Ranking",
+                    icon = ImageVector.vectorResource(R.drawable.ic_cup),
+                )
+            }
+            Spacer(Modifier.height(8.dp))
+            Divider(
+                modifier = Modifier.fillMaxWidth(),
+                color = Color.White
+            )
+            Spacer(Modifier.height(16.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Spacer(Modifier.width(16.dp))
+                ItemMainFeature(
+                    title = "Deteksi \nTajwid",
+                    icon = ImageVector.vectorResource(R.drawable.ic_scan),
+                    onClick = navigateToTajweedDetection,
+                    modifier = Modifier.weight(1f)
+                )
+                Spacer(Modifier.width(24.dp))
+                Divider(
+                    modifier = Modifier
+                        .size(1.dp, 56.dp),
+                    color = Color.White
+                )
+                Spacer(Modifier.width(24.dp))
+                ItemMainFeature(
+                    title = "Praktik \nSholat",
+                    icon = ImageVector.vectorResource(R.drawable.ic_salat),
+                    onClick = navigateToPracticeSalat,
+                    modifier = Modifier.weight(1f)
+                )
+                Spacer(Modifier.width(24.dp))
+            }
         }
     }
 }
