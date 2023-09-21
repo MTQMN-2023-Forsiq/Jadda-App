@@ -33,7 +33,9 @@ import unsiq.mtqmn23.jadda.presentation.screen.auth.login.LoginScreen
 import unsiq.mtqmn23.jadda.presentation.screen.auth.register.RegisterScreen
 import unsiq.mtqmn23.jadda.presentation.screen.home.HomeScreen
 import unsiq.mtqmn23.jadda.presentation.screen.onboarding.OnBoardingScreen
+import unsiq.mtqmn23.jadda.presentation.screen.profile.ProfileScreen
 import unsiq.mtqmn23.jadda.presentation.screen.splash.SplashScreen
+import unsiq.mtqmn23.jadda.presentation.screen.tajweeddetect.TajweedDetectScreen
 import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -108,6 +110,22 @@ class MainActivity : ComponentActivity() {
                             }
                             composable(Screen.Home.route) {
                                 HomeScreen(
+                                    snackbarHostState = snackbarHostState,
+                                    navigateToTajweedDetection = {
+                                        navController.navigate(Screen.TajweedDetect.route)
+                                    }
+                                )
+                            }
+                            composable(Screen.Profile.route) {
+                                ProfileScreen(
+                                    navigateToBack = {}
+                                )
+                            }
+                            composable(Screen.TajweedDetect.route) {
+                                TajweedDetectScreen(
+                                    navigateUp = {
+                                        navController.navigateUp()
+                                    },
                                     snackbarHostState = snackbarHostState
                                 )
                             }

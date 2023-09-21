@@ -9,4 +9,5 @@ sealed class Screen(val route: String) {
     object Profile : Screen("profile")
     object Quran : Screen("quran")
     object Watch : Screen("watch")
+    object TajweedDetect : Screen("tajweed-detect")
 }

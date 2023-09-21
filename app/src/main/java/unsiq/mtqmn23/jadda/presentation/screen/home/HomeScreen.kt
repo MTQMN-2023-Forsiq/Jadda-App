@@ -53,6 +53,7 @@ import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
 @Composable
 fun HomeScreen(
     snackbarHostState: SnackbarHostState,
+    navigateToTajweedDetection: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -67,12 +68,14 @@ fun HomeScreen(
     }
 
     HomeContent(
+        navigateToTajweedDetection = navigateToTajweedDetection,
         listTajweed = state.listTajweed
     )
 }
 
 @Composable
 fun HomeContent(
+    navigateToTajweedDetection: () -> Unit,
     modifier: Modifier = Modifier,
     listTajweed: SnapshotStateList<TajweedDataItem>,
 ) {
@@ -106,7 +109,7 @@ fun HomeContent(
                 navigateToHadits = {},
                 navigateToPracticeSalat = {},
                 navigateToRanking = {},
-                navigateToTajweedDetection = {},
+                navigateToTajweedDetection = navigateToTajweedDetection,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
             Spacer(Modifier.height(16.dp))
@@ -191,9 +194,9 @@ fun HomeCard(
         Image(
             imageVector = ImageVector.vectorResource(R.drawable.ic_mosque_dark),
             contentDescription = null,
-            contentScale = ContentScale.FillWidth,
+            contentScale = ContentScale.FillHeight,
             modifier = Modifier.align(Alignment.BottomEnd)
-                .size(224.dp)
+                .height(224.dp)
                 .clip(RoundedCornerShape(bottomEnd = 24.dp))
         )
         Column(

@@ -1,6 +1,7 @@
 package unsiq.mtqmn23.jadda.presentation.screen.home.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -20,11 +21,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import unsiq.mtqmn23.jadda.presentation.ui.theme.BlueSky
-import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
+import unsiq.mtqmn23.jadda.presentation.ui.theme.Gray
 
 @Composable
 fun ItemTajweed(
@@ -73,7 +75,9 @@ fun ItemTajweed(
                 contentDescription = null,
                 contentScale = ContentScale.Inside,
                 modifier = Modifier
-                    .background(Green, CircleShape)
+                    .background(Color.White, CircleShape)
+                    .clip(CircleShape)
+                    .border(width = 0.5.dp, color = Gray.copy(alpha = 0.5f), CircleShape)
                     .size(48.dp)
             )
             Spacer(Modifier.width(16.dp))

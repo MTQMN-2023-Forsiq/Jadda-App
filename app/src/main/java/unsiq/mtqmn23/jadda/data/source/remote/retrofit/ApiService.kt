@@ -4,6 +4,8 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
+import unsiq.mtqmn23.jadda.data.source.remote.response.DetailTajweedResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.LoginResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.RegisterResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedResponse
@@ -27,4 +29,9 @@ interface ApiService {
 
     @GET("tajweeds")
     suspend fun getAllTajweed(): TajweedResponse
+
+    @GET("tajweed/{id}")
+    suspend fun getTajweedById(
+        @Path("id") id: String,
+    ): DetailTajweedResponse
 }

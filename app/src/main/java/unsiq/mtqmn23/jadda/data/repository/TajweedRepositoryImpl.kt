@@ -24,4 +24,15 @@ class TajweedRepositoryImpl @Inject constructor(
             emit(Result.Error("Terjadi Kesalahan"))
         }
     }
+
+    override fun getTajweedById(id: String) = flow {
+        emit(Result.Loading())
+        try {
+            val response = remoteDataSource.getTajweedById(id)
+            val result = response.data.toDomain()
+            emit(Result.Success(result))
+        } catch (e: Exception) {
+            emit(Result.Error("Terjadi Kesalahan"))
+        }
+    }
 }
