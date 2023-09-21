@@ -20,7 +20,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Info
@@ -204,7 +206,7 @@ fun TajweedDetectContent(
                 Spacer(Modifier.size(24.dp).background(Green, RoundedCornerShape(8.dp)))
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    "Mad Iwadh",
+                    "Mad Iwadl",
                     color = Green
                 )
             }
@@ -230,7 +232,8 @@ fun TajweedDetectContent(
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(16.dp)
+                    .verticalScroll(rememberScrollState()),
             ) {
                 Text(
                     "${detailTajweed.name}",
@@ -245,7 +248,7 @@ fun TajweedDetectContent(
                     textAlign = TextAlign.Justify
                 )
                 Spacer(Modifier.height(16.dp))
-                Text("Huruf hukum bacaan :")
+                Text("Huruf hukum bacaan :", style = MaterialTheme.typography.bodyMedium)
                 AsyncImage(
                     model = detailTajweed.tajweedLetterUrl,
                     contentDescription = null,
@@ -254,7 +257,7 @@ fun TajweedDetectContent(
                         .height(64.dp)
                         .align(Alignment.End)
                 )
-                Text("Contoh bacaan :")
+                Text("Contoh bacaan :", style = MaterialTheme.typography.bodyMedium)
                 AsyncImage(
                     model = detailTajweed.exampleUrl,
                     contentDescription = null,
