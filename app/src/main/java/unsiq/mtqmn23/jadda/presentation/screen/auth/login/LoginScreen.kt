@@ -9,13 +9,18 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import unsiq.mtqmn23.jadda.presentation.screen.auth.components.BackgroundAuth
 import unsiq.mtqmn23.jadda.presentation.screen.auth.components.CardAuth
 import unsiq.mtqmn23.jadda.presentation.screen.auth.components.SpannableText
@@ -24,21 +29,41 @@ import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
 
 @Composable
 fun LoginScreen(
+    snackBarHostState: SnackbarHostState,
     navigateToRegister: () -> Unit,
     navigateToHome: () -> Unit,
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    state.statusMessage?.let {
+        LaunchedEffect(it) {
+            snackBarHostState.showSnackbar(it)
+        }
+    }
     LoginContent(
+        email = state.email,
+        password = state.password,
         navigateToRegister = navigateToRegister,
-        navigateToHome = navigateToHome
+        navigateToHome = navigateToHome,
+        doLogin = {
+            viewModel.onEvent(LoginEvent.OnLogin(state.email, state.password))
+        },
+        onValueChanged = { email, password ->
+            viewModel.onEvent(LoginEvent.OnValueChanged(email, password))
+        }
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginContent(
+    email: String,
+    password: String,
     modifier: Modifier = Modifier,
     navigateToRegister: () -> Unit,
     navigateToHome: () -> Unit,
+    onValueChanged: (email: String, password: String) -> Unit,
+    doLogin: () -> Unit,
 ) {
 
     ConstraintLayout(
@@ -60,8 +85,10 @@ fun LoginContent(
         CardAuth(
             inputForm = {
                 OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
+                    value = email,
+                    onValueChange = {
+                        onValueChanged(it, password)
+                    },
                     placeholder = {
                         Text("Email")
                     },
@@ -70,8 +97,10 @@ fun LoginContent(
                         .fillMaxWidth()
                 )
                 OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
+                    value = password,
+                    onValueChange = {
+                        onValueChanged(email, it)
+                    },
                     placeholder = {
                         Text("Password")
                     },
@@ -85,7 +114,7 @@ fun LoginContent(
                     ),
                     modifier = Modifier.padding(16.dp)
                         .align(Alignment.End)
-                        .clickable { }
+                        .clickable { doLogin() }
                 )
             },
             titleButton = "Login",
@@ -120,7 +149,11 @@ fun LoginContentPreview() {
     JaddaTheme {
         LoginContent(
             navigateToRegister = {},
-            navigateToHome = {}
+            navigateToHome = {},
+            email = "",
+            password = "",
+            onValueChanged = {_, _ -> },
+            doLogin = {},
         )
     }
 }
