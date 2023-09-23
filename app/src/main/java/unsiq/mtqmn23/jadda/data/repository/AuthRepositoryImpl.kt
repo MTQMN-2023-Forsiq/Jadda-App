@@ -49,4 +49,8 @@ class AuthRepositoryImpl @Inject constructor(
             emit(Result.Error("Terjadi Kesalahan"))
         }
     }
+
+    override fun getLoginState(): Boolean {
+        return sessionManager.getLoginState()
+    }
 }

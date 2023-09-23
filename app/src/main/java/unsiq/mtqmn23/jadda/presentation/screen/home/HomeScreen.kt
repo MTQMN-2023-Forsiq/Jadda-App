@@ -54,6 +54,7 @@ import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
 fun HomeScreen(
     snackbarHostState: SnackbarHostState,
     navigateToTajweedDetection: () -> Unit,
+    navigateToPracticeSalat: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -69,15 +70,23 @@ fun HomeScreen(
 
     HomeContent(
         navigateToTajweedDetection = navigateToTajweedDetection,
-        listTajweed = state.listTajweed
+        listTajweed = state.listTajweed,
+        expandableCardIds = state.expandableCardIds,
+        navigateToPracticeSalat = navigateToPracticeSalat,
+        onTajweedCardClick = {
+            viewModel.onEvent(HomeEvent.OnTajweedCardClick(it))
+        }
     )
 }
 
 @Composable
 fun HomeContent(
     navigateToTajweedDetection: () -> Unit,
-    modifier: Modifier = Modifier,
+    navigateToPracticeSalat: () -> Unit,
+    expandableCardIds: SnapshotStateList<Int>,
     listTajweed: SnapshotStateList<TajweedDataItem>,
+    onTajweedCardClick: (id: Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         modifier = modifier
@@ -107,7 +116,7 @@ fun HomeContent(
                 navigateToTafsir = {},
                 navigateToCompass = {},
                 navigateToHadits = {},
-                navigateToPracticeSalat = {},
+                navigateToPracticeSalat = navigateToPracticeSalat,
                 navigateToRanking = {},
                 navigateToTajweedDetection = navigateToTajweedDetection,
                 modifier = Modifier.padding(horizontal = 16.dp)
@@ -121,7 +130,9 @@ fun HomeContent(
                         title = it.title.toString(),
                         icon = it.icon ?: "",
                         type = RowType.SINGLE,
-                        onClick = {}
+                        expanded = false,
+                        onClick = {},
+                        contents = it.contents,
                     )
                 }
             }
@@ -135,8 +146,10 @@ fun HomeContent(
                     ItemTajweed(
                         title = item.title.toString(),
                         icon = item.icon ?: "",
+                        contents = item.contents,
                         type = rowType,
-                        onClick = {},
+                        onClick = { onTajweedCardClick(item.id ?: 0) },
+                        expanded = expandableCardIds.contains(item.id),
                         modifier = Modifier
                             .padding(vertical = 0.dp, horizontal = 16.dp)
                     )

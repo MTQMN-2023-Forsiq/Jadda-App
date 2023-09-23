@@ -44,6 +44,9 @@ val Typography = Typography(
     bodyMedium = Typography().bodyMedium.copy(
         fontFamily = poppinsFamily
     ),
+    bodySmall = Typography().bodySmall.copy(
+        fontFamily = poppinsFamily
+    ),
     displaySmall = Typography().displaySmall.copy(
         fontFamily = poppinsFamily
     ),

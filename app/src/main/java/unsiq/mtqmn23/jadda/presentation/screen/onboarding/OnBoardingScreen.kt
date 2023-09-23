@@ -18,9 +18,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Button
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -107,7 +106,7 @@ fun TopSection(
             onClick = onSkipClick,
             modifier = Modifier.align(Alignment.CenterEnd)
         ) {
-            Text("Skip", color = MaterialTheme.colors.onBackground)
+            Text("Skip", color = MaterialTheme.colorScheme.onBackground)
         }
     }
 }
@@ -160,16 +159,12 @@ fun OnBoardingContent(
             Spacer(modifier = Modifier.height(32.dp))
             Button(
                 onClick = if (index == 2) navigateToLogin else onNextClicked,
-                shape = RoundedCornerShape(50),
-                colors = ButtonDefaults.buttonColors(backgroundColor = Green),
                 modifier = Modifier
                     .height(48.dp)
                     .width(128.dp)
             ) {
                 Text(
                     text = if (index == 2) "Mulai" else "Lanjut",
-                    color = Color.White,
-                    fontWeight = FontWeight.SemiBold
                 )
             }
             Spacer(Modifier.height(16.dp))
@@ -193,7 +188,7 @@ fun BoxScope.Indicators(size: Int, index: Int) {
 @Composable
 fun Indicator(isSelected: Boolean) {
     val width = animateDpAsState(
-        targetValue = if (isSelected) 25.dp else 10.dp,
+        targetValue = if (isSelected) 24.dp else 8.dp,
         animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
         label = ""
     )

@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.os.SystemClock
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.camera.core.ImageProxy
 import com.google.mediapipe.framework.image.BitmapImageBuilder
@@ -210,7 +209,7 @@ class ObjectDetectorHelper(
         const val DELEGATE_GPU = 1
         const val MODEL_EFFICIENTDETV0 = 0
         const val MAX_RESULTS_DEFAULT = 5
-        const val THRESHOLD_DEFAULT = 0.2F
+        const val THRESHOLD_DEFAULT = 0.4F
         const val OTHER_ERROR = 0
         const val GPU_ERROR = 1
 

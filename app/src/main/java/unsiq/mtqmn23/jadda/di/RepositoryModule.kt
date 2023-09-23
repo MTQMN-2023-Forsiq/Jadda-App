@@ -5,8 +5,10 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import unsiq.mtqmn23.jadda.data.repository.AuthRepositoryImpl
+import unsiq.mtqmn23.jadda.data.repository.SalatRepositoryImpl
 import unsiq.mtqmn23.jadda.data.repository.TajweedRepositoryImpl
 import unsiq.mtqmn23.jadda.domain.repository.AuthRepository
+import unsiq.mtqmn23.jadda.domain.repository.SalatRepository
 import unsiq.mtqmn23.jadda.domain.repository.TajweedRepository
 import javax.inject.Singleton
 
@@ -21,4 +23,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun provideAuthRepository(authRepositoryImpl: AuthRepositoryImpl): AuthRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideSalatRepository(salatRepositoryImpl: SalatRepositoryImpl): SalatRepository
 }

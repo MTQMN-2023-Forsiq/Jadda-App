@@ -27,6 +27,10 @@ class SessionManagerImpl @Inject constructor(
         }
     }
 
+    override fun getLoginState(): Boolean {
+        return prefs.getBoolean(Constants.LOGIN_STATE, false)
+    }
+
     override fun logout() {
         prefs.edit {
             clear()

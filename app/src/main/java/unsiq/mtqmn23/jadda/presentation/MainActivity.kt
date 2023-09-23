@@ -1,11 +1,11 @@
 package unsiq.mtqmn23.jadda.presentation
 
+import QuranScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -17,10 +17,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,11 +36,13 @@ import unsiq.mtqmn23.jadda.presentation.screen.auth.register.RegisterScreen
 import unsiq.mtqmn23.jadda.presentation.screen.home.HomeScreen
 import unsiq.mtqmn23.jadda.presentation.screen.onboarding.OnBoardingScreen
 import unsiq.mtqmn23.jadda.presentation.screen.profile.ProfileScreen
+import unsiq.mtqmn23.jadda.presentation.screen.salat.SalatScreen
+import unsiq.mtqmn23.jadda.presentation.screen.salatpractice.SalatPracticeScreen
 import unsiq.mtqmn23.jadda.presentation.screen.splash.SplashScreen
 import unsiq.mtqmn23.jadda.presentation.screen.tajweeddetect.TajweedDetectScreen
 import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
+import unsiq.mtqmn23.jadda.util.sharedViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalPagerApi::class)
@@ -70,41 +74,22 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             startDestination = Screen.Splash.route,
                         ) {
-                            composable(Screen.Splash.route) {
+                            composable(Screen.Splash.route) {0
                                 SplashScreen(
-                                    onTimeOut = {
-                                        navController.navigate(Screen.OnBoarding.route) {
-                                            popUpTo(Screen.Splash.route) {
-                                                inclusive = true
+                                    onTimeOut = { isLoggedIn ->
+                                        if (isLoggedIn) {
+                                            navController.navigate(Screen.Home.route) {
+                                                popUpTo(Screen.Splash.route) {
+                                                    inclusive = true
+                                                }
+                                            }
+                                        } else {
+                                            navController.navigate("auth-graph") {
+                                                popUpTo(Screen.Splash.route) {
+                                                    inclusive = true
+                                                }
                                             }
                                         }
-                                    }
-                                )
-                            }
-                            composable(Screen.OnBoarding.route) {
-                                OnBoardingScreen(
-                                    navigateToLogin = {
-                                        navController.navigate(Screen.Login.route)
-                                    }
-                                )
-                            }
-                            composable(Screen.Login.route) {
-                                LoginScreen(
-                                    snackBarHostState = snackbarHostState,
-                                    navigateToRegister = {
-                                        navController.navigate(Screen.Register.route)
-                                    },
-                                    navigateToHome = {
-                                        navController.navigate(Screen.Home.route) {
-
-                                        }
-                                    }
-                                )
-                            }
-                            composable(Screen.Register.route) {
-                                RegisterScreen(
-                                    navigateUp = {
-                                        navController.navigateUp()
                                     }
                                 )
                             }
@@ -113,8 +98,17 @@ class MainActivity : ComponentActivity() {
                                     snackbarHostState = snackbarHostState,
                                     navigateToTajweedDetection = {
                                         navController.navigate(Screen.TajweedDetect.route)
+                                    },
+                                    navigateToPracticeSalat = {
+                                        navController.navigate("salat-graph")
                                     }
                                 )
+                            }
+                            composable(Screen.Watch.route) {
+
+                            }
+                            composable(Screen.Quran.route) {
+                                QuranScreen()
                             }
                             composable(Screen.Profile.route) {
                                 ProfileScreen(
@@ -128,6 +122,71 @@ class MainActivity : ComponentActivity() {
                                     },
                                     snackbarHostState = snackbarHostState
                                 )
+                            }
+                            navigation(
+                                startDestination = Screen.OnBoarding.route,
+                                route = "auth-graph"
+                            ) {
+                                composable(Screen.OnBoarding.route) {
+                                    OnBoardingScreen(
+                                        navigateToLogin = {
+                                            navController.navigate(Screen.Login.route)
+                                        }
+                                    )
+                                }
+                                composable(Screen.Login.route) {
+                                    LoginScreen(
+                                        snackBarHostState = snackbarHostState,
+                                        navigateToRegister = {
+                                            navController.navigate(Screen.Register.route)
+                                        },
+                                        navigateToHome = {
+                                            navController.navigate(Screen.Home.route) {
+                                                popUpTo("auth-graph") {
+                                                    inclusive = true
+                                                }
+                                            }
+                                        }
+                                    )
+                                }
+                                composable(Screen.Register.route) {
+                                    RegisterScreen(
+                                        navigateUp = {
+                                            navController.navigateUp()
+                                        },
+                                        snackbarHostState = snackbarHostState
+                                    )
+                                }
+                            }
+                            navigation(
+                                startDestination = Screen.Salat.route,
+                                route = "salat-graph"
+                            ) {
+                                composable(Screen.Salat.route) {
+                                    val viewModel = it.sharedViewModel<MainViewModel>(navController)
+
+                                    SalatScreen(
+                                        navigateUp = {
+                                            navController.navigateUp()
+                                        },
+                                        navigateToPractice = { items ->
+                                            viewModel.setData(items)
+                                            navController.navigate(Screen.SalatPractice.route)
+                                        }
+                                    )
+                                }
+                                composable(Screen.SalatPractice.route) {
+                                    val viewModel = it.sharedViewModel<MainViewModel>(navController)
+                                    val items by viewModel.salatItems.collectAsStateWithLifecycle()
+                                    if (items.isNotEmpty()) {
+                                        SalatPracticeScreen(
+                                            salatItems = items,
+                                            onNavigateUp = {
+                                                navController.navigateUp()
+                                            }
+                                        )
+                                    }
+                                }
                             }
                         }
                     }

@@ -8,5 +8,6 @@ data class HomeUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val statusMessage: String? = null,
-    val listTajweed: SnapshotStateList<TajweedDataItem> = mutableStateListOf()
+    val listTajweed: SnapshotStateList<TajweedDataItem> = mutableStateListOf(),
+    val expandableCardIds: SnapshotStateList<Int> = mutableStateListOf(),
 )

@@ -24,6 +24,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.delay
 import unsiq.mtqmn23.jadda.R
@@ -33,15 +34,17 @@ import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun SplashScreen(
-    onTimeOut: () -> Unit,
+    onTimeOut: (isLoggedIn: Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: SplashViewModel = hiltViewModel()
 ) {
+    val isLoggedIn by viewModel.isLoggedIn
     val currentOnTimeOut by rememberUpdatedState(onTimeOut)
     val systemUiController = rememberSystemUiController()
 
     LaunchedEffect(Unit) {
         delay(3.seconds)
-        currentOnTimeOut()
+        currentOnTimeOut(isLoggedIn)
     }
 
     DisposableEffect(Unit) {

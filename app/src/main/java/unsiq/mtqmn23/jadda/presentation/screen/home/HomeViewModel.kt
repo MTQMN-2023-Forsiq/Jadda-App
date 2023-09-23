@@ -26,8 +26,18 @@ class HomeViewModel @Inject constructor(
 
     fun onEvent(event: HomeEvent) {
         when (event) {
-            HomeEvent.Refresh -> {
+            is HomeEvent.Refresh -> {
                 getTajweed()
+            }
+            is HomeEvent.OnTajweedCardClick -> {
+                _state.update {
+                    val currentIds = it.expandableCardIds
+                    it.copy(
+                        expandableCardIds = currentIds.also { list ->
+                            if (list.contains(event.id)) list.remove(event.id) else list.add(event.id)
+                        }
+                    )
+                }
             }
         }
     }

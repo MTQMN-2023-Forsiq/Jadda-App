@@ -10,4 +10,6 @@ sealed class Screen(val route: String) {
     object Quran : Screen("quran")
     object Watch : Screen("watch")
     object TajweedDetect : Screen("tajweed-detect")
+    object Salat : Screen("salat")
+    object SalatPractice : Screen("salat-practice")
 }

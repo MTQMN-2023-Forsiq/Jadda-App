@@ -9,4 +9,5 @@ sealed class LoginEvent {
         val email: String,
         val password: String
     ) : LoginEvent()
+    object ResetState : LoginEvent()
 }

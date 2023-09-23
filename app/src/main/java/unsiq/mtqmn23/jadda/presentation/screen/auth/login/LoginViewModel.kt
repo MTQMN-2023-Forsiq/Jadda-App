@@ -32,6 +32,9 @@ class LoginViewModel @Inject constructor(
                     )
                 }
             }
+            is LoginEvent.ResetState -> _state.update {
+                LoginUiState()
+            }
         }
     }
 
@@ -60,6 +63,7 @@ class LoginViewModel @Inject constructor(
                         it.copy(
                             isLoading = false,
                             isError = false,
+                            loginSuccess = true,
                             statusMessage = result.data
                         )
                     }

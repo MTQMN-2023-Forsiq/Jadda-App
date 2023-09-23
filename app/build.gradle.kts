@@ -71,8 +71,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1") //ConstraintLayout
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1") //Lifecycle-compose
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1") //Coroutine
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1") //routine
 
     // Timber
     implementation("com.jakewharton.timber:timber:5.0.1")
@@ -126,6 +125,12 @@ dependencies {
 
     //Mediapipe
     implementation("com.google.mediapipe:tasks-vision:0.10.0")
+
+    //TaskVision
+    implementation("org.tensorflow:tensorflow-lite-task-vision:0.4.0")
+    implementation("org.tensorflow:tensorflow-lite:2.9.0")
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.9.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.1")
 
     // CameraX core library
     val cameraxVersion = "1.1.0"

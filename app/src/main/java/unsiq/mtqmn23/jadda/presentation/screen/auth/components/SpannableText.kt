@@ -1,6 +1,5 @@
 package unsiq.mtqmn23.jadda.presentation.screen.auth.components
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,7 +25,7 @@ fun SpannableText(
     Text(
         text = annotatedString,
         textAlign = TextAlign.Center,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         style = MaterialTheme.typography.bodyMedium
     )
 }

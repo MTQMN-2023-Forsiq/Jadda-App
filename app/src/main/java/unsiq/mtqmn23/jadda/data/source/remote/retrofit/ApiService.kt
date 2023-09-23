@@ -8,6 +8,7 @@ import retrofit2.http.Path
 import unsiq.mtqmn23.jadda.data.source.remote.response.DetailTajweedResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.LoginResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.RegisterResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.SalatResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedResponse
 
 interface ApiService {
@@ -34,4 +35,7 @@ interface ApiService {
     suspend fun getTajweedById(
         @Path("id") id: String,
     ): DetailTajweedResponse
+
+    @GET("sholat")
+    suspend fun getSalat(): SalatResponse
 }
