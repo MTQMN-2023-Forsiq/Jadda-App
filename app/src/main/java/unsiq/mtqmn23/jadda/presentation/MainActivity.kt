@@ -24,6 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.get
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
 import unsiq.mtqmn23.jadda.R
@@ -74,7 +75,7 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             startDestination = Screen.Splash.route,
                         ) {
-                            composable(Screen.Splash.route) {0
+                            composable(Screen.Splash.route) {
                                 SplashScreen(
                                     onTimeOut = { isLoggedIn ->
                                         if (isLoggedIn) {
@@ -241,7 +242,7 @@ fun BottomBar(
                 icon = if (currentRoute == item.screen.route) item.activeIcon else item.inactiveIcon,
                 onClick = {
                     navController.navigate(item.screen.route) {
-                        popUpTo(navController.graph.startDestinationId) {
+                        popUpTo(navController.graph[Screen.Home.route].id) {
                             saveState = true
                         }
                         restoreState = true

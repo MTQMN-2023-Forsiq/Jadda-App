@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import unsiq.mtqmn23.jadda.data.source.remote.RemoteDataSource
 import unsiq.mtqmn23.jadda.domain.model.salat.DataSalatItem
+import unsiq.mtqmn23.jadda.domain.model.salat.SalatDate
 import unsiq.mtqmn23.jadda.domain.repository.SalatRepository
 import unsiq.mtqmn23.jadda.util.Result
 import unsiq.mtqmn23.jadda.util.toDomain
@@ -19,6 +20,17 @@ class SalatRepositoryImpl @Inject constructor(
         emit(Result.Loading())
         try {
             val response = remoteDataSource.getSalat()
+            val result = response.data.toDomain()
+            emit(Result.Success(result))
+        } catch (e: Exception) {
+            emit(Result.Error("Terjadi Kesalahan"))
+        }
+    }
+
+    override fun getSalatSchedule(city: String): Flow<Result<SalatDate>> = flow {
+        emit(Result.Loading())
+        try {
+            val response = remoteDataSource.getSalatSchedule(city)
             val result = response.data.toDomain()
             emit(Result.Success(result))
         } catch (e: Exception) {

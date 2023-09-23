@@ -1,5 +1,6 @@
 package unsiq.mtqmn23.jadda.presentation.screen.home
 
+import android.location.Geocoder
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -33,14 +35,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import unsiq.mtqmn23.jadda.R
+import unsiq.mtqmn23.jadda.domain.model.salat.SalatDate
 import unsiq.mtqmn23.jadda.domain.model.tajweed.TajweedDataItem
 import unsiq.mtqmn23.jadda.presentation.components.RoundedButton
 import unsiq.mtqmn23.jadda.presentation.screen.home.components.ItemFeature
@@ -49,7 +55,9 @@ import unsiq.mtqmn23.jadda.presentation.screen.home.components.ItemTajweed
 import unsiq.mtqmn23.jadda.presentation.screen.home.components.RowType
 import unsiq.mtqmn23.jadda.presentation.ui.theme.BlueSky
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
+import java.util.Locale
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreen(
     snackbarHostState: SnackbarHostState,
@@ -59,7 +67,40 @@ fun HomeScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
     val systemUiController = rememberSystemUiController()
+
+    val locationPermissions = rememberMultiplePermissionsState(
+        permissions = listOf(
+            android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        )
+    )
+
+    LaunchedEffect(key1 = locationPermissions.allPermissionsGranted) {
+        if (locationPermissions.allPermissionsGranted) {
+            viewModel.onEvent(HomeEvent.OnGetCurrentLocation)
+        } else {
+            locationPermissions.launchMultiplePermissionRequest()
+        }
+    }
+
+    LaunchedEffect(key1 = state.currentLocation) {
+        try {
+            val geocoder = Geocoder(context, Locale.getDefault())
+            val address = geocoder.getFromLocation(
+                state.currentLocation?.latitude ?: return@LaunchedEffect,
+                state.currentLocation?.longitude ?: return@LaunchedEffect,
+                1
+            )
+            if (!address.isNullOrEmpty()) {
+                viewModel.onEvent(HomeEvent.OnGetSalatSchedule(address[0].locality))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            snackbarHostState.showSnackbar("Gagal Mendapatkan Lokasi")
+        }
+    }
 
     SideEffect {
         systemUiController.apply {
@@ -69,6 +110,8 @@ fun HomeScreen(
     }
 
     HomeContent(
+        city = state.city,
+        salatDate = state.salatDate,
         navigateToTajweedDetection = navigateToTajweedDetection,
         listTajweed = state.listTajweed,
         expandableCardIds = state.expandableCardIds,
@@ -81,6 +124,8 @@ fun HomeScreen(
 
 @Composable
 fun HomeContent(
+    city: String?,
+    salatDate: SalatDate,
     navigateToTajweedDetection: () -> Unit,
     navigateToPracticeSalat: () -> Unit,
     expandableCardIds: SnapshotStateList<Int>,
@@ -93,20 +138,20 @@ fun HomeContent(
     ) {
         item {
             HomeAppBar(
-                date = "Kamis, 14 September",
-                dateHijri = "12 Rajab 1443 H"
+                date = salatDate.nationalDate ?: "-",
+                dateHijri = salatDate.hijriahDate ?: "-"
             )
         }
         item {
             HomeCard(
-                myLocationName = "Wonosobo",
+                myLocationName = city,
                 nearPrayName = "Dzuhur",
-                nearPrayTime = "11:34",
-                subuhTime = "04:21",
-                dzuhurTime = "11:34",
-                asharTime = "15:27",
-                maghribTime = "17:56",
-                isyaTime = "18:55",
+                nearPrayTime = salatDate.times.dhuhr ?: "-",
+                subuhTime = salatDate.times.fajr ?: "-",
+                dzuhurTime = salatDate.times.dhuhr ?: "-",
+                asharTime = salatDate.times.asr ?: "-",
+                maghribTime = salatDate.times.maghrib ?: "-",
+                isyaTime = salatDate.times.isha ?: "-",
                 modifier = Modifier
                     .padding(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 16.dp),
             )
@@ -224,10 +269,11 @@ fun HomeCard(
                 Icon(
                     imageVector = Icons.Filled.MyLocation,
                     contentDescription = null,
-                    tint = Color.White
+                    tint = Color.White,
+                    modifier = Modifier.size(20.dp)
                 )
                 Spacer(Modifier.width(8.dp))
-                Text(myLocationName ?: "Aktifkan Lokasi", color = Color.White)
+                Text(myLocationName ?: "Aktifkan lokasi", color = Color.White)
             }
             Spacer(Modifier.height(24.dp))
             Text(

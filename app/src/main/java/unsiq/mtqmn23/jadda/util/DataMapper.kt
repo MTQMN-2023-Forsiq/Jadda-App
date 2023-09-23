@@ -1,11 +1,15 @@
 package unsiq.mtqmn23.jadda.util
 
 import unsiq.mtqmn23.jadda.data.source.remote.response.DataSalatItemResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.DateResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.MovementAngleResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedContentItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedDataItemResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.TimesResponse
 import unsiq.mtqmn23.jadda.domain.model.salat.DataSalatItem
 import unsiq.mtqmn23.jadda.domain.model.salat.MovementAngle
+import unsiq.mtqmn23.jadda.domain.model.salat.SalatDate
+import unsiq.mtqmn23.jadda.domain.model.salat.SalatTimes
 import unsiq.mtqmn23.jadda.domain.model.tajweed.TajweedContentItem
 import unsiq.mtqmn23.jadda.domain.model.tajweed.TajweedDataItem
 import unsiq.mtqmn23.jadda.presentation.screen.salatpractice.model.PersonBodyAngle
@@ -73,5 +77,29 @@ fun MovementAngle.toPersonBodyAngle(): PersonBodyAngle {
         leftKnee = leftKnee ?: 0,
         leftShoulder = leftShoulder ?: 0,
 //        leftWrist = leftWrist ?: 0,
+    )
+}
+
+fun DateResponse.toDomain(): SalatDate {
+    return SalatDate(
+        nationalDate = nationalDate,
+        hijriahDate = hijriahDate,
+        times = times.toDomain()
+    )
+}
+
+private fun TimesResponse.toDomain(): SalatTimes {
+    return SalatTimes(
+        sunset = sunset,
+        asr = asr,
+        isha = isha,
+        fajr = fajr,
+        dhuhr = dhuhr,
+        maghrib = maghrib,
+        lastthird = lastthird,
+        firstthird = firstthird,
+        sunrise = sunrise,
+        midnight = midnight,
+        imsak = imsak
     )
 }

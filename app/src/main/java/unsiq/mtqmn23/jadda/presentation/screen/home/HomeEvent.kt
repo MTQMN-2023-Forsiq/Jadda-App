@@ -5,4 +5,8 @@ sealed class HomeEvent {
     data class OnTajweedCardClick(
         val id: Int
     ) : HomeEvent()
+    object OnGetCurrentLocation : HomeEvent()
+    data class OnGetSalatSchedule(
+        val city: String
+    ) : HomeEvent()
 }

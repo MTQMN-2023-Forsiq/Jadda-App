@@ -9,6 +9,7 @@ import unsiq.mtqmn23.jadda.data.source.remote.response.DetailTajweedResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.LoginResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.RegisterResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.SalatResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.SalatScheduleResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedResponse
 
 interface ApiService {
@@ -38,4 +39,9 @@ interface ApiService {
 
     @GET("sholat")
     suspend fun getSalat(): SalatResponse
+
+    @GET("jadwal-sholat/{city}")
+    suspend fun getSalatSchedule(
+        @Path("city") city: String
+    ): SalatScheduleResponse
 }
