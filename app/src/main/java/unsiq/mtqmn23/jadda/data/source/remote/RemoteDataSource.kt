@@ -22,4 +22,6 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
     suspend fun getAllSurah() = apiService.getAllSurah()
 
     suspend fun getDetailSurah(id: String) = apiService.getDetailSurah(id)
+
+    suspend fun getAllHadist() = apiService.getAllHadist()
 }

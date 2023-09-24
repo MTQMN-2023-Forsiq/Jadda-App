@@ -36,6 +36,7 @@ import unsiq.mtqmn23.jadda.presentation.navigation.NavigationItem
 import unsiq.mtqmn23.jadda.presentation.navigation.Screen
 import unsiq.mtqmn23.jadda.presentation.screen.auth.login.LoginScreen
 import unsiq.mtqmn23.jadda.presentation.screen.auth.register.RegisterScreen
+import unsiq.mtqmn23.jadda.presentation.screen.hadist.HadistScreen
 import unsiq.mtqmn23.jadda.presentation.screen.home.HomeScreen
 import unsiq.mtqmn23.jadda.presentation.screen.onboarding.OnBoardingScreen
 import unsiq.mtqmn23.jadda.presentation.screen.profile.ProfileScreen
@@ -109,6 +110,9 @@ class MainActivity : ComponentActivity() {
                                     },
                                     navigateToDetailTajweed = {
                                         navController.navigate(Screen.Tajweed.createRoute(it))
+                                    },
+                                    navigateToHadist = {
+                                        navController.navigate(Screen.Hadist.route)
                                     }
                                 )
                             }
@@ -120,6 +124,14 @@ class MainActivity : ComponentActivity() {
                                     snackbarHostState = snackbarHostState,
                                     navigateToDetail = {
                                         navController.navigate(Screen.QuranDetail.createRoute(it.toString()))
+                                    }
+                                )
+                            }
+                            composable(Screen.Hadist.route){
+                                HadistScreen(
+                                    snackbarHostState = snackbarHostState,
+                                    navigateToBack = {
+                                        navController.navigate(Screen.Home.route)
                                     }
                                 )
                             }

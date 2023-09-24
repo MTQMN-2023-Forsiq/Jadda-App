@@ -3,11 +3,14 @@ package unsiq.mtqmn23.jadda.util
 import unsiq.mtqmn23.jadda.data.source.remote.response.DataSalatItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DataSurahResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DateResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.HadistItemResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.HadistResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.MovementAngleResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.QuranDataItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedContentItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedDataItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TimesResponse
+import unsiq.mtqmn23.jadda.domain.model.hadist.HadistItem
 import unsiq.mtqmn23.jadda.domain.model.quran.DataSurah
 import unsiq.mtqmn23.jadda.domain.model.quran.QuranDataItem
 import unsiq.mtqmn23.jadda.domain.model.quran.VersesItem
@@ -39,7 +42,7 @@ fun TajweedContentItemResponse.toDomain(): TajweedContentItem {
     )
 }
 
-fun List<DataSalatItemResponse>.toDomain(): List<DataSalatItem>  {
+fun List<DataSalatItemResponse>.toDomain(): List<DataSalatItem> {
     return map {
         DataSalatItem(
             imageUrl = it.imageUrl,
@@ -120,7 +123,7 @@ fun QuranDataItemResponse.toDomain(): QuranDataItem {
     )
 }
 
-fun DataSurahResponse.toDomain() : DataSurah {
+fun DataSurahResponse.toDomain(): DataSurah {
     return DataSurah(
         ayat = ayat,
         revelation = revelation,
@@ -135,5 +138,13 @@ fun DataSurahResponse.toDomain() : DataSurah {
                 audio = it.audio
             )
         }
+    )
+}
+
+fun HadistItemResponse.toDomain(): HadistItem {
+    return HadistItem(
+        number = number,
+        textArab = arab,
+        translation = id,
     )
 }

@@ -5,10 +5,12 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import unsiq.mtqmn23.jadda.data.repository.AuthRepositoryImpl
+import unsiq.mtqmn23.jadda.data.repository.HadistRepositoryImpl
 import unsiq.mtqmn23.jadda.data.repository.QuranRepositoryImpl
 import unsiq.mtqmn23.jadda.data.repository.SalatRepositoryImpl
 import unsiq.mtqmn23.jadda.data.repository.TajweedRepositoryImpl
 import unsiq.mtqmn23.jadda.domain.repository.AuthRepository
+import unsiq.mtqmn23.jadda.domain.repository.HadistRepository
 import unsiq.mtqmn23.jadda.domain.repository.QuranRepository
 import unsiq.mtqmn23.jadda.domain.repository.SalatRepository
 import unsiq.mtqmn23.jadda.domain.repository.TajweedRepository
@@ -33,4 +35,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun provideQuranRepository(quranRepositoryImpl: QuranRepositoryImpl): QuranRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideHadistRepository(hadistRepositoryImpl: HadistRepositoryImpl): HadistRepository
 }
