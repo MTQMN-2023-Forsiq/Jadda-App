@@ -1,5 +1,6 @@
 package unsiq.mtqmn23.jadda.util
 
+import unsiq.mtqmn23.jadda.data.source.remote.response.DataHadistResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DataSalatItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DataSurahResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DateResponse
@@ -10,6 +11,7 @@ import unsiq.mtqmn23.jadda.data.source.remote.response.QuranDataItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedContentItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedDataItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TimesResponse
+import unsiq.mtqmn23.jadda.domain.model.hadist.DataHadist
 import unsiq.mtqmn23.jadda.domain.model.hadist.HadistItem
 import unsiq.mtqmn23.jadda.domain.model.quran.DataSurah
 import unsiq.mtqmn23.jadda.domain.model.quran.QuranDataItem
@@ -141,10 +143,18 @@ fun DataSurahResponse.toDomain(): DataSurah {
     )
 }
 
-fun HadistItemResponse.toDomain(): HadistItem {
-    return HadistItem(
-        number = number,
-        textArab = arab,
-        translation = id,
+fun DataHadistResponse.toDomain(): DataHadist {
+    return DataHadist(
+        id = id,
+        name = name,
+        available = available,
+        requested = requested,
+        hadist = hadist.map {
+            HadistItem(
+                number = it.number,
+                textArab = it.arab,
+                translation = it.id,
+            )
+        }
     )
 }
