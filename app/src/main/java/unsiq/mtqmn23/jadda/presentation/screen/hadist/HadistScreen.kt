@@ -3,7 +3,6 @@ package unsiq.mtqmn23.jadda.presentation.screen.hadist
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,10 +33,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -46,7 +43,6 @@ import unsiq.mtqmn23.jadda.R
 import unsiq.mtqmn23.jadda.domain.model.hadist.HadistItem
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Gray
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
-import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -87,13 +83,19 @@ fun HadistScreen(
         },
     ) {
         Column {
-            HadistContent(state.hadist)
+            HadistContent(
+                name = state.dataHadist.name.toString(),
+                requested = state.dataHadist.requested.toString(),
+                hadist = state.dataHadist.hadist,
+            )
         }
     }
 }
 
 @Composable
 fun HadistContent(
+    name: String,
+    requested: String,
     hadist: List<HadistItem>,
 ) {
     Spacer(modifier = Modifier.height(64.dp))
@@ -107,7 +109,7 @@ fun HadistContent(
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = "HR. Abu Daud",
+                text = name,
                 color = Color.White,
                 fontWeight = FontWeight.Medium,
             )
@@ -116,7 +118,7 @@ fun HadistContent(
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = "Jumlah 20",
+                text = "Jumlah $requested",
                 color = Color.White,
                 textAlign = TextAlign.Right,
                 fontWeight = FontWeight.Medium,

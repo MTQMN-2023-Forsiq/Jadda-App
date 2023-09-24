@@ -28,20 +28,18 @@ class HadistViewModel @Inject constructor(
                 is Result.Error -> _state.update {
                     it.copy(
                         isLoading = false,
-                        isError = true,
                         statusMessage = result.message
                     )
                 }
                 is Result.Loading -> _state.update {
                     it.copy(
                         isLoading = true,
-                        isError = false,
                     )
                 }
                 is Result.Success -> _state.update {
                     it.copy(
                         isLoading = false,
-                        hadist = result.data
+                        dataHadist = result.data
                     )
                 }
             }
