@@ -1,11 +1,14 @@
 package unsiq.mtqmn23.jadda.presentation.screen.salatpractice
 
 import android.Manifest
+import android.media.AudioManager
+import android.media.MediaPlayer
 import android.view.SurfaceView
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,7 +44,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -90,6 +92,7 @@ fun SalatPracticeScreen(
     SalatPracticeContent(
         score = state.poseScore,
         poseImage = salatItems[state.currentPosePosition].imageUrl.toString(),
+        title = salatItems[state.currentPosePosition].title.toString(),
         isTimerShouldStarted = state.isTimerStarted,
         timer = state.timer,
         onAngleChange = {
@@ -117,6 +120,48 @@ fun SalatPracticeScreen(
             }
         )
     }
+
+    if (state.isPerfectSoundActive) {
+        val mediaPlayer = remember { MediaPlayer() }
+        var isPlaying by remember { mutableStateOf(false) }
+        var isAudioComplete by remember { mutableStateOf(false) }
+
+        DisposableEffect(Unit) {
+            onDispose {
+                mediaPlayer.release()
+            }
+        }
+
+        LaunchedEffect(Unit) {
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
+            try {
+                mediaPlayer.setDataSource(context.assets.openFd("success.mp3"))
+                mediaPlayer.prepare()
+                mediaPlayer.start()
+                isPlaying = true
+                isAudioComplete = false
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        DisposableEffect(mediaPlayer) {
+            onDispose {
+                mediaPlayer.setOnCompletionListener(null)
+            }
+        }
+
+        DisposableEffect(mediaPlayer) {
+            val listener = MediaPlayer.OnCompletionListener {
+                isPlaying = false
+                isAudioComplete = true
+            }
+            mediaPlayer.setOnCompletionListener(listener)
+            onDispose {
+                mediaPlayer.setOnCompletionListener(null)
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -126,6 +171,7 @@ fun SalatPracticeContent(
     poseImage: String,
     isTimerShouldStarted: Boolean,
     timer: Int,
+    title: String,
     onAngleChange: (PersonBodyAngle) -> Unit,
     onNoPerson: () -> Unit,
     onNavigateUp: () -> Unit,
@@ -199,10 +245,10 @@ fun SalatPracticeContent(
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .size(width = 300.dp, height = 200.dp)
+                        .align(Alignment.TopCenter)
+                        .size(width = 300.dp, height = 400.dp)
                         .rotate(90f)
-                        .offset(x = 48.dp, y = (-48).dp)
+                        .offset(x = (-64).dp)
                 )
                 TopButtons(
                     onNavigateUp = onNavigateUp,
@@ -212,26 +258,19 @@ fun SalatPracticeContent(
                         .align(Alignment.BottomEnd)
                         .offset(x = (-16).dp, y = (-32).dp)
                 )
-                if (isTimerShouldStarted) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .rotate(90f)
-                    ) {
-                        Text(
-                            text = "Tahan Posisi",
-                            style = MaterialTheme.typography.displayLarge,
-                            color = Color.Red,
-                            fontWeight = FontWeight.Bold,
+                AnimatedVisibility(
+                    visible = true,
+                    modifier = Modifier
+                        .rotate(90f)
+                        .align(Alignment.CenterEnd)
+                        .offset(y = (-64).dp)
+                ) {
+                    Text(
+                        title,
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            color = Color.White
                         )
-                        Text(
-                            text = "$timer",
-                            style = MaterialTheme.typography.displayLarge,
-                            color = Color.Red,
-                            fontWeight = FontWeight.Bold,
-                        )
-                    }
+                    )
                 }
             }
             LaunchedEffect(surfaceView, imageAnalyzer) {

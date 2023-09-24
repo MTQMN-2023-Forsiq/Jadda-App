@@ -69,15 +69,12 @@ class SalatPracticeViewModel @Inject constructor(
     }
 
     private fun countDownTimer(currentPosePosition: Int) = viewModelScope.launch {
-        (8 downTo 0).forEach { timer ->
-            _state.update {
-                it.copy(
-                    isTimerStarted = true,
-                    timer = timer
-                )
-            }
-            delay(1000)
+        _state.update {
+            it.copy(
+                isPerfectSoundActive = true
+            )
         }
+        delay(2000)
         _state.update {
             val posesSize = it.salatItems.size
             val isExerciseDone = currentPosePosition == posesSize - 1
@@ -89,6 +86,7 @@ class SalatPracticeViewModel @Inject constructor(
                 }
             }
             it.copy(
+                isPerfectSoundActive = false,
                 currentPosePosition = if (currentPosePosition != posesSize - 1)
                     currentPosePosition + 1 else posesSize - 1,
                 poseScore = 0.0,
@@ -97,29 +95,4 @@ class SalatPracticeViewModel @Inject constructor(
             )
         }
     }
-
-//    private fun markActivityAsDone(burnedCalorie: Int) = viewModelScope.launch {
-//        userUseCase.addUserPoints(25).collect { result ->
-//            when (result) {
-//                is Result.Loading -> {}
-//                is Result.Success -> {
-//                    _state.update {
-//                        it.copy(
-//                            isExerciseDone = true,
-//                            exercisePoint = result.data.pointsAdded ?: 0
-//                        )
-//                    }
-//                }
-//
-//                is Result.Error -> {
-//                    _state.update {
-//                        it.copy(
-//                            isExerciseDone = true,
-//                            exercisePoint = 0
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//    }
 }

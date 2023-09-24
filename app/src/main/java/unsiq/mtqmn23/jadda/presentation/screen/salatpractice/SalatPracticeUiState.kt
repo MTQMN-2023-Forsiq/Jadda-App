@@ -10,5 +10,6 @@ data class SalatPracticeUiState(
     val isTimerStarted: Boolean = false,
     val isExitDialogShow: Boolean = false,
     val timer: Int = -1,
-    val exercisePoint: Int = 25
+    val exercisePoint: Int = 25,
+    val isPerfectSoundActive: Boolean = false,
 )

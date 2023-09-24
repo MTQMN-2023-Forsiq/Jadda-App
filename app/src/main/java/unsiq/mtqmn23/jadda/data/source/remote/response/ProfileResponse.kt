@@ -11,7 +11,7 @@ data class ProfileResponse(
 	val error: Boolean? = null,
 
 	@field:SerializedName("message")
-	val message: Any? = null
+	val message: String? = null
 )
 
 data class ProfileItemResponse(

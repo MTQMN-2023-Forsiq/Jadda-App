@@ -6,5 +6,5 @@ data class ProfileItem(
     val avatar: String? = null,
     val ranking: Int? = null,
     val point: Int? = null,
-    val task_complete: Int? = null,
+    val taskComplete: Int? = null,
 )

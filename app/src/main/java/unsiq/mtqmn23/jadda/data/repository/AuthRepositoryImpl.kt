@@ -53,4 +53,8 @@ class AuthRepositoryImpl @Inject constructor(
     override fun getLoginState(): Boolean {
         return sessionManager.getLoginState()
     }
+
+    override fun logout() {
+        sessionManager.logout()
+    }
 }

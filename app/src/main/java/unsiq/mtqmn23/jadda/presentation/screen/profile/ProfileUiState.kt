@@ -7,4 +7,6 @@ data class ProfileUiState(
     val isError: Boolean = false,
     val statusMessage: String? = null,
     val profile: ProfileItem = ProfileItem(),
+    val isLogout: Boolean = false,
+    val isAlertShown: Boolean = false,
 )

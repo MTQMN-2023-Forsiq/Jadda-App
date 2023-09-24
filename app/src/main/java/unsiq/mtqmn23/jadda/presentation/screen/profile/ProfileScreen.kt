@@ -1,6 +1,8 @@
 package unsiq.mtqmn23.jadda.presentation.screen.profile
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,48 +15,62 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Leaderboard
 import androidx.compose.material.icons.filled.Logout
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Leaderboard
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import unsiq.mtqmn23.jadda.R
+import unsiq.mtqmn23.jadda.presentation.MainActivity
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Black
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
-import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     snackbarHostState: SnackbarHostState,
-    viewModel: ProfileViewModel = hiltViewModel()
+    viewModel: ProfileViewModel = hiltViewModel(),
 ) {
+    val activity = LocalContext.current as? Activity
     val state by viewModel.state.collectAsStateWithLifecycle()
-    state.statusMessage.let {
-        LaunchedEffect(it){
-            snackbarHostState.showSnackbar(it.toString())
+    val systemUiController = rememberSystemUiController()
+
+    state.statusMessage?.let {
+        LaunchedEffect(it) {
+            snackbarHostState.showSnackbar(it)
         }
     }
-    val systemUiController = rememberSystemUiController()
+
+    LaunchedEffect(state.isLogout) {
+        if (state.isLogout) {
+            activity?.run {
+                startActivity(Intent(activity, MainActivity::class.java))
+                finish()
+            }
+        }
+    }
 
     SideEffect {
         systemUiController.apply {
@@ -70,41 +86,86 @@ fun ProfileScreen(
             Text(
                 text = "Profil",
                 style = androidx.compose.material3.MaterialTheme.typography.titleLarge,
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.TopCenter)
             )
         }
-        ProfileContent()
+        ProfileContent(
+            avatar = state.profile.avatar ?: "-",
+            name = state.profile.name ?: "-",
+            pointEarned = state.profile.point ?: 0,
+            email = state.profile.email ?: "-",
+            taskCompleted = state.profile.taskComplete ?: 0,
+            ranking = state.profile.ranking ?: 0,
+            onLogout = {
+                viewModel.onEvent(ProfileEvent.OnShowHideAlert(true))
+            }
+        )
+    }
+
+    if (state.isAlertShown) {
+        AlertDialog(
+            onDismissRequest = {
+                viewModel.onEvent(ProfileEvent.OnShowHideAlert(false))
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.onEvent(ProfileEvent.OnLogoutConfirmed)
+                    }
+                ) {
+                    Text("Ya")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.onEvent(ProfileEvent.OnShowHideAlert(false))
+                    }
+                ) {
+                    Text("Tidak")
+                }
+            },
+            text = {
+                Text("Apakah anda yakin untuk keluar?")
+            }
+        )
     }
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ProfileContent() {
-    Spacer(modifier = Modifier.height(60.dp))
+fun ProfileContent(
+    avatar: String,
+    name: String,
+    pointEarned: Int,
+    email: String,
+    taskCompleted: Int,
+    ranking: Int,
+    onLogout: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(14.dp)
+            .padding(16.dp)
     ) {
-        val path = "https://qive.rumahdigitalit.com/assets/images/avatar.png"
         GlideImage(
-            model = path,
+            model = avatar,
             contentDescription = "Image",
             modifier = Modifier
-                .height(64.dp)
-                .width(64.dp)
-        ){
-            it
-                .error(R.drawable.ic_avatar_lazy)
+                .height(80.dp)
+                .width(80.dp)
+        ) {
+            it.error(R.drawable.ic_avatar_lazy)
                 .placeholder(R.drawable.ic_avatar_lazy)
-                .load(path)
+                .load(avatar)
         }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Sumpeno",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
+            text = name,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold
         )
         Spacer(modifier = Modifier.height(8.dp))
         Row(
@@ -115,7 +176,7 @@ fun ProfileContent() {
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = "1200",
+                    text = "$pointEarned",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -129,7 +190,7 @@ fun ProfileContent() {
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = "20",
+                    text = "$taskCompleted",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -142,10 +203,9 @@ fun ProfileContent() {
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier
-                .padding(8.dp)
                 .background(
                     color = Green,
-                    shape = RoundedCornerShape(20.dp)
+                    shape = RoundedCornerShape(16.dp)
                 )
                 .fillMaxWidth()
                 .height(80.dp),
@@ -162,7 +222,7 @@ fun ProfileContent() {
                     color = Color.White,
                 )
                 Text(
-                    text = "5th (Good Job)",
+                    text = "${ranking}th (Good Job)",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
@@ -183,7 +243,7 @@ fun ProfileContent() {
                             .align(Alignment.Center)
                     )
                     Text(
-                        text = "5",
+                        text = "$ranking",
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Black,
                         color = Color.White,
@@ -193,12 +253,12 @@ fun ProfileContent() {
             }
         }
     }
-    Column{
+    Column {
         IconTextButton(
             text = "Leaderboard",
             icon = {
                 Icon(
-                    imageVector = Icons.Default.Leaderboard,
+                    imageVector = Icons.Outlined.Leaderboard,
                     contentDescription = null,
                     tint = Black,
                 )
@@ -211,7 +271,7 @@ fun ProfileContent() {
             text = "Tentang Kami",
             icon = {
                 Icon(
-                    imageVector = Icons.Default.Info,
+                    imageVector = Icons.Outlined.Info,
                     contentDescription = null,
                     tint = Black,
                 )
@@ -229,9 +289,7 @@ fun ProfileContent() {
                     tint = Black,
                 )
             },
-            onClick = {
-
-            }
+            onClick = onLogout
         )
     }
 }
@@ -240,24 +298,23 @@ fun ProfileContent() {
 fun IconTextButton(
     text: String,
     icon: @Composable () -> Unit,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick },
+            .clickable { onClick() },
     ) {
         Row(
-            modifier = Modifier.padding(20.dp,16.dp,8.dp,16.dp),
+            modifier = Modifier.padding(20.dp, 16.dp, 8.dp, 16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             icon()
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = text,
-                style = MaterialTheme.typography.button.copy(color = Black),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 2.dp)
             )
         }
     }

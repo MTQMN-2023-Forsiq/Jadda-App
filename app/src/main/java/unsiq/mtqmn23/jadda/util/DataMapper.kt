@@ -4,8 +4,6 @@ import unsiq.mtqmn23.jadda.data.source.remote.response.DataHadistResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DataSalatItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DataSurahResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DateResponse
-import unsiq.mtqmn23.jadda.data.source.remote.response.HadistItemResponse
-import unsiq.mtqmn23.jadda.data.source.remote.response.HadistResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.MovementAngleResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.ProfileItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.QuranDataItemResponse
@@ -179,7 +177,7 @@ fun ProfileItemResponse.toDomain(): ProfileItem{
         avatar = avatar,
         ranking = ranking,
         point = point,
-        task_complete = taskComplete,
+        taskComplete = taskComplete,
     )
 }
 
