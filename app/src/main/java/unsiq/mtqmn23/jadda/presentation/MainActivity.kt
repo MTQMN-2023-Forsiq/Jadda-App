@@ -44,6 +44,7 @@ import unsiq.mtqmn23.jadda.presentation.screen.quran.detail.DetailSurahScreen
 import unsiq.mtqmn23.jadda.presentation.screen.salat.SalatScreen
 import unsiq.mtqmn23.jadda.presentation.screen.salatpractice.SalatPracticeScreen
 import unsiq.mtqmn23.jadda.presentation.screen.splash.SplashScreen
+import unsiq.mtqmn23.jadda.presentation.screen.tafsir.TafsirScreen
 import unsiq.mtqmn23.jadda.presentation.screen.tajweed.TajweedScreen
 import unsiq.mtqmn23.jadda.presentation.screen.tajweeddetect.TajweedDetectScreen
 import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
@@ -111,6 +112,9 @@ class MainActivity : ComponentActivity() {
                                     navigateToDetailTajweed = {
                                         navController.navigate(Screen.Tajweed.createRoute(it))
                                     },
+                                    navigateToTafsir = {
+                                        navController.navigate(Screen.Tafsir.route)
+                                    },
                                     navigateToHadist = {
                                         navController.navigate(Screen.Hadist.route)
                                     }
@@ -124,14 +128,6 @@ class MainActivity : ComponentActivity() {
                                     snackbarHostState = snackbarHostState,
                                     navigateToDetail = {
                                         navController.navigate(Screen.QuranDetail.createRoute(it.toString()))
-                                    }
-                                )
-                            }
-                            composable(Screen.Hadist.route){
-                                HadistScreen(
-                                    snackbarHostState = snackbarHostState,
-                                    navigateToBack = {
-                                        navController.navigate(Screen.Home.route)
                                     }
                                 )
                             }
