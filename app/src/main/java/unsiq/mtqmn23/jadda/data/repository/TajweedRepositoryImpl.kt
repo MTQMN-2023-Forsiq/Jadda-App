@@ -1,5 +1,6 @@
 package unsiq.mtqmn23.jadda.data.repository
 
+import android.util.Log
 import kotlinx.coroutines.flow.flow
 import unsiq.mtqmn23.jadda.data.source.remote.RemoteDataSource
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedDataItemResponse
@@ -32,6 +33,7 @@ class TajweedRepositoryImpl @Inject constructor(
             val result = response.data.toDomain()
             emit(Result.Success(result))
         } catch (e: Exception) {
+            Log.d("TAJWEEDD", "getTajweedById $id: ${e.message}")
             emit(Result.Error("Terjadi Kesalahan"))
         }
     }

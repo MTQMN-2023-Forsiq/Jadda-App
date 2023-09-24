@@ -63,7 +63,8 @@ fun HomeScreen(
     snackbarHostState: SnackbarHostState,
     navigateToTajweedDetection: () -> Unit,
     navigateToPracticeSalat: () -> Unit,
-    viewModel: HomeViewModel = hiltViewModel()
+    navigateToDetailTajweed: (id: String) -> Unit,
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
@@ -118,7 +119,8 @@ fun HomeScreen(
         navigateToPracticeSalat = navigateToPracticeSalat,
         onTajweedCardClick = {
             viewModel.onEvent(HomeEvent.OnTajweedCardClick(it))
-        }
+        },
+        navigateToDetailTajweed = navigateToDetailTajweed
     )
 }
 
@@ -131,6 +133,7 @@ fun HomeContent(
     expandableCardIds: SnapshotStateList<Int>,
     listTajweed: SnapshotStateList<TajweedDataItem>,
     onTajweedCardClick: (id: Int) -> Unit,
+    navigateToDetailTajweed: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -177,10 +180,12 @@ fun HomeContent(
                         type = RowType.SINGLE,
                         expanded = false,
                         onClick = {},
+                        onDetailTajweedClick = navigateToDetailTajweed,
                         contents = it.contents,
                     )
                 }
             }
+
             else -> {
                 itemsIndexed(listTajweed) { index, item ->
                     val rowType = when (index) {
@@ -194,6 +199,7 @@ fun HomeContent(
                         contents = item.contents,
                         type = rowType,
                         onClick = { onTajweedCardClick(item.id ?: 0) },
+                        onDetailTajweedClick = navigateToDetailTajweed,
                         expanded = expandableCardIds.contains(item.id),
                         modifier = Modifier
                             .padding(vertical = 0.dp, horizontal = 16.dp)

@@ -5,8 +5,10 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import unsiq.mtqmn23.jadda.data.source.remote.response.DetailQuranResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DetailTajweedResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.LoginResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.QuranResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.RegisterResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.SalatResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.SalatScheduleResponse
@@ -44,4 +46,12 @@ interface ApiService {
     suspend fun getSalatSchedule(
         @Path("city") city: String
     ): SalatScheduleResponse
+
+    @GET("surah")
+    suspend fun getAllSurah(): QuranResponse
+
+    @GET("surah/{surah_id}")
+    suspend fun getDetailSurah(
+        @Path("surah_id") id: String
+    ) : DetailQuranResponse
 }

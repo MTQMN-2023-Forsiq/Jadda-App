@@ -6,7 +6,6 @@ import android.media.MediaPlayer
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Pause
@@ -31,9 +31,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,29 +46,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import unsiq.mtqmn23.jadda.R
+import unsiq.mtqmn23.jadda.domain.model.quran.VersesItem
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Gray
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
-import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailSurahScreen(
+    id: String,
+    snackbarHostState: SnackbarHostState,
     navigateToBack: () -> Unit,
+    viewModel: DetailSurahViewModel = hiltViewModel()
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(id) {
+        viewModel.onEvent(DetailSurahEvent.OnInitial(id))
+    }
+
+    state.statusMessage?.let {
+        LaunchedEffect(it) {
+            snackbarHostState.showSnackbar(it)
+        }
+    }
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "الفاتحة",
+                        text = state.dataSurah.shortName.toString(),
                         color = Color.Black,
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
@@ -73,8 +93,10 @@ fun DetailSurahScreen(
                         textAlign = TextAlign.Center,
                     )
                 },
-                modifier = Modifier
-                    .border(1.dp, color = Color.Gray.copy(alpha = 0.3f)),
+                modifier = Modifier,
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color.White
+                ),
                 navigationIcon = {
                     IconButton(
                         onClick = { navigateToBack() }
@@ -86,25 +108,36 @@ fun DetailSurahScreen(
         },
     ) {
         Column {
-            SurahContent()
+            SurahContent(
+                title = state.dataSurah.name.toString(),
+                ayatCount = state.dataSurah.ayat ?: 0,
+                revelation = state.dataSurah.revelation.toString(),
+                verses = state.dataSurah.verses
+            )
         }
     }
 }
 
 @Composable
-fun SurahContent() {
+fun SurahContent(
+    title: String,
+    ayatCount: Int,
+    revelation: String,
+    verses: List<VersesItem>
+) {
     Spacer(modifier = Modifier.height(64.dp))
     Row(
         modifier = Modifier
             .background(Green)
-            .padding(6.dp)
-            .fillMaxWidth()
+            .padding(vertical = 8.dp, horizontal = 16.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = "Al-Fatihah",
+                text = title,
                 color = Color.White,
                 fontWeight = FontWeight.Medium,
             )
@@ -113,7 +146,7 @@ fun SurahContent() {
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = "7 Ayat, Makiyyah",
+                text = "$ayatCount Ayat, $revelation",
                 color = Color.White,
                 textAlign = TextAlign.Right,
                 fontWeight = FontWeight.Medium,
@@ -122,16 +155,26 @@ fun SurahContent() {
         }
     }
 
-    val items = (1..7).toList()
     LazyColumn {
-        items(items.size) { item ->
-            Ayat()
+        items(items = verses, key = { it.number ?: 0 }) {
+            Ayat(
+                number = it.number ?: 0,
+                arab = it.textArab.toString(),
+                translation = it.translation.toString(),
+                audio = it.audio.toString()
+            )
         }
     }
 }
 
 @Composable
-fun Ayat() {
+fun Ayat(
+    number: Int,
+    arab: String,
+    translation: String,
+    audio: String,
+    modifier: Modifier = Modifier,
+) {
     Column(
         modifier = Modifier.padding(14.dp)
     ) {
@@ -149,7 +192,7 @@ fun Ayat() {
                         .align(Alignment.Center)
                 )
                 Text(
-                    text = "1",
+                    text = number.toString(),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Black,
                     color = Color.White,
@@ -157,10 +200,10 @@ fun Ayat() {
                 )
             }
             Text(
-                text = "بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيْمِِ",
-                color = Color.Black,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
+                text = arab,
+                fontSize = 28.sp,
+                fontFamily = FontFamily(Font(R.font.arabic_regular)),
+                lineHeight = 40.sp,
                 modifier = Modifier
                     .padding(0.dp, 0.dp, 0.dp, 0.dp)
                     .weight(1f),
@@ -169,13 +212,12 @@ fun Ayat() {
         }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Dengan nama Allah yang maha pengasih lagi maha penyayang.",
-            fontStyle = FontStyle.Italic,
+            text = translation,
             modifier = Modifier.fillMaxWidth(),
             fontSize = 12.sp,
         )
         Spacer(modifier = Modifier.height(4.dp))
-        MyAudioPlayer(audio = "https://cdn.islamic.network/quran/audio/64/ar.alafasy/1.mp3")
+        MyAudioPlayer(audio = audio)
         Divider(color = Gray.copy(alpha = 0.5f), thickness = 1.dp)
     }
 }
@@ -256,16 +298,5 @@ fun MyAudioPlayer(audio: String) {
         onDispose {
             mediaPlayer.setOnCompletionListener(null)
         }
-    }
-}
-
-
-@Preview
-@Composable
-fun DetailSurahScreenPreview() {
-    JaddaTheme {
-        DetailSurahScreen(
-            navigateToBack = {}
-        )
     }
 }

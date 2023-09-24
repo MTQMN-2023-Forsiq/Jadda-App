@@ -41,6 +41,7 @@ fun ItemTajweed(
     expanded: Boolean,
     contents: List<TajweedContentItem>,
     onClick: () -> Unit,
+    onDetailTajweedClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val shape = when (type) {
@@ -112,6 +113,9 @@ fun ItemTajweed(
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
+                                .clickable {
+                                    onDetailTajweedClick(it.id.toString())
+                                }
                                 .padding(vertical = 12.dp, horizontal = 16.dp)
                                 .fillMaxWidth()
                         ) {

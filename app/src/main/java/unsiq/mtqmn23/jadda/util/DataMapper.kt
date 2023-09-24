@@ -1,11 +1,16 @@
 package unsiq.mtqmn23.jadda.util
 
 import unsiq.mtqmn23.jadda.data.source.remote.response.DataSalatItemResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.DataSurahResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DateResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.MovementAngleResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.QuranDataItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedContentItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedDataItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TimesResponse
+import unsiq.mtqmn23.jadda.domain.model.quran.DataSurah
+import unsiq.mtqmn23.jadda.domain.model.quran.QuranDataItem
+import unsiq.mtqmn23.jadda.domain.model.quran.VersesItem
 import unsiq.mtqmn23.jadda.domain.model.salat.DataSalatItem
 import unsiq.mtqmn23.jadda.domain.model.salat.MovementAngle
 import unsiq.mtqmn23.jadda.domain.model.salat.SalatDate
@@ -101,5 +106,34 @@ private fun TimesResponse.toDomain(): SalatTimes {
         sunrise = sunrise,
         midnight = midnight,
         imsak = imsak
+    )
+}
+
+fun QuranDataItemResponse.toDomain(): QuranDataItem {
+    return QuranDataItem(
+        ayat = ayat,
+        revelation = revelation,
+        name = name,
+        translation = translation,
+        shortName = shortName,
+        id = id
+    )
+}
+
+fun DataSurahResponse.toDomain() : DataSurah {
+    return DataSurah(
+        ayat = ayat,
+        revelation = revelation,
+        name = name,
+        shortName = shortName,
+        id = id,
+        verses = verses.map {
+            VersesItem(
+                number = it.number,
+                translation = it.translation,
+                textArab = it.textArab,
+                audio = it.audio
+            )
+        }
     )
 }

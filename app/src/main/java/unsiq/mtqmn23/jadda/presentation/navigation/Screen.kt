@@ -8,7 +8,13 @@ sealed class Screen(val route: String) {
     object Home : Screen("home")
     object Profile : Screen("profile")
     object Quran : Screen("quran")
+    object QuranDetail : Screen("quran-detail/{id}") {
+        fun createRoute(id: String) = "quran-detail/$id"
+    }
     object Watch : Screen("watch")
+    object Tajweed : Screen("tajweed/{id}") {
+        fun createRoute(id: String) = "tajweed/$id}"
+    }
     object TajweedDetect : Screen("tajweed-detect")
     object Salat : Screen("salat")
     object SalatPractice : Screen("salat-practice")
