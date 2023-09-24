@@ -29,7 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import unsiq.mtqmn23.jadda.domain.model.tajweed.TajweedContentItem
 import unsiq.mtqmn23.jadda.presentation.components.RoundedButton
-import unsiq.mtqmn23.jadda.presentation.screen.tajweeddetect.AudioPlayer
+import unsiq.mtqmn23.jadda.presentation.screen.quran.detail.MyAudioPlayer
 
 @Composable
 fun TajweedScreen(
@@ -124,8 +124,8 @@ fun TajweedContent(
             )
             Spacer(Modifier.height(16.dp))
             detailTajweed.audioUrl?.let {
-                AudioPlayer(
-                    audioUrl = it
+                MyAudioPlayer(
+                    audio = it
                 )
             }
         }

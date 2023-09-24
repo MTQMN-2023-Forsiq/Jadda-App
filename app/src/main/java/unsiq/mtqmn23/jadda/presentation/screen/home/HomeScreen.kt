@@ -122,7 +122,9 @@ fun HomeScreen(
         onTajweedCardClick = {
             viewModel.onEvent(HomeEvent.OnTajweedCardClick(it))
         },
-        navigateToDetailTajweed = navigateToDetailTajweed
+        navigateToDetailTajweed = navigateToDetailTajweed,
+        navigateToTafsir = navigateToTafsir,
+        navigateToHadist = navigateToHadist
     )
 }
 

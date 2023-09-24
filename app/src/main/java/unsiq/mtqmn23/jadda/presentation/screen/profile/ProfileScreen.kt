@@ -22,6 +22,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import unsiq.mtqmn23.jadda.R
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Black
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
@@ -43,6 +45,15 @@ import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
 fun ProfileScreen(
     navigateToBack: () -> Unit,
 ) {
+    val systemUiController = rememberSystemUiController()
+
+    SideEffect {
+        systemUiController.apply {
+            setStatusBarColor(color = Color.White)
+            setNavigationBarColor(color = Color.White)
+        }
+    }
+
     Column {
         Box(
             modifier = Modifier.padding(16.dp)

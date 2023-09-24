@@ -32,6 +32,7 @@ class QuranRepositoryImpl @Inject constructor(
             val result = response.data.toDomain()
             emit(Result.Success(result))
         } catch (e: Exception) {
+            e.printStackTrace()
             emit(Result.Error("Terjadi Kesalahan"))
         }
     }

@@ -46,7 +46,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -64,9 +63,6 @@ import coil.compose.AsyncImage
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.objectdetector.ObjectDetectionResult
 import kotlinx.coroutines.CoroutineScope
@@ -420,35 +416,14 @@ fun CameraView(
 }
 
 @Composable
+@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 fun AudioPlayer(
     audioUrl: String,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 
-    val player = remember {
-        ExoPlayer.Builder(context)
-            .build()
-    }
 
-    DisposableEffect(audioUrl) {
-        val mediaItem =
-            MediaItem.fromUri(audioUrl)
-        player.setMediaItem(mediaItem)
-        player.prepare()
-        onDispose {
-            player.release()
-        }
-    }
 
-    AndroidView(
-        factory = {
-            PlayerControlView(it).apply {
-                this.showTimeoutMs = 0
-                this.player = player
-            }
-        },
-        modifier = modifier.fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-    )
+
 }

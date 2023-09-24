@@ -4,12 +4,12 @@ import unsiq.mtqmn23.jadda.data.source.remote.response.DataSalatItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DataSurahResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DateResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.HadistItemResponse
-import unsiq.mtqmn23.jadda.data.source.remote.response.HadistResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.MovementAngleResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.QuranDataItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedContentItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedDataItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TimesResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.WatchDataItemResponse
 import unsiq.mtqmn23.jadda.domain.model.hadist.HadistItem
 import unsiq.mtqmn23.jadda.domain.model.quran.DataSurah
 import unsiq.mtqmn23.jadda.domain.model.quran.QuranDataItem
@@ -20,6 +20,7 @@ import unsiq.mtqmn23.jadda.domain.model.salat.SalatDate
 import unsiq.mtqmn23.jadda.domain.model.salat.SalatTimes
 import unsiq.mtqmn23.jadda.domain.model.tajweed.TajweedContentItem
 import unsiq.mtqmn23.jadda.domain.model.tajweed.TajweedDataItem
+import unsiq.mtqmn23.jadda.domain.model.watch.WatchDataItem
 import unsiq.mtqmn23.jadda.presentation.screen.salatpractice.model.PersonBodyAngle
 
 fun TajweedDataItemResponse.toDomain(): TajweedDataItem {
@@ -146,5 +147,14 @@ fun HadistItemResponse.toDomain(): HadistItem {
         number = number,
         textArab = arab,
         translation = id,
+    )
+}
+
+fun WatchDataItemResponse.toDomain(): WatchDataItem {
+    return WatchDataItem(
+        videoUrl = videoUrl,
+        id = id,
+        title = title,
+        info = info,
     )
 }
