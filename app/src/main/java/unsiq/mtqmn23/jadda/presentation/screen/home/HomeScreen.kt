@@ -66,6 +66,7 @@ fun HomeScreen(
     navigateToDetailTajweed: (id: String) -> Unit,
     navigateToHadist: () -> Unit,
     navigateToTafsir: () -> Unit,
+    navigateToCompass: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -124,7 +125,8 @@ fun HomeScreen(
         },
         navigateToDetailTajweed = navigateToDetailTajweed,
         navigateToTafsir = navigateToTafsir,
-        navigateToHadist = navigateToHadist
+        navigateToHadist = navigateToHadist,
+        navigateToCompass = navigateToCompass,
     )
 }
 
@@ -136,6 +138,7 @@ fun HomeContent(
     navigateToPracticeSalat: () -> Unit,
     navigateToTafsir: () -> Unit,
     navigateToHadist: () -> Unit,
+    navigateToCompass: () -> Unit,
     expandableCardIds: SnapshotStateList<Int>,
     listTajweed: SnapshotStateList<TajweedDataItem>,
     onTajweedCardClick: (id: Int) -> Unit,
@@ -168,7 +171,7 @@ fun HomeContent(
         item {
             FeatureCard(
                 navigateToTafsir = navigateToTafsir,
-                navigateToCompass = {},
+                navigateToCompass = navigateToCompass,
                 navigateToHadits = navigateToHadist,
                 navigateToPracticeSalat = navigateToPracticeSalat,
                 navigateToRanking = {},

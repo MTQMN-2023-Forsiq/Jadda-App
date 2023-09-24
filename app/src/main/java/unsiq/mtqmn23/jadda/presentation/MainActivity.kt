@@ -36,6 +36,7 @@ import unsiq.mtqmn23.jadda.presentation.navigation.NavigationItem
 import unsiq.mtqmn23.jadda.presentation.navigation.Screen
 import unsiq.mtqmn23.jadda.presentation.screen.auth.login.LoginScreen
 import unsiq.mtqmn23.jadda.presentation.screen.auth.register.RegisterScreen
+import unsiq.mtqmn23.jadda.presentation.screen.compass.CompassScreen
 import unsiq.mtqmn23.jadda.presentation.screen.hadist.HadistScreen
 import unsiq.mtqmn23.jadda.presentation.screen.home.HomeScreen
 import unsiq.mtqmn23.jadda.presentation.screen.onboarding.OnBoardingScreen
@@ -118,6 +119,9 @@ class MainActivity : ComponentActivity() {
                                     },
                                     navigateToHadist = {
                                         navController.navigate(Screen.Hadist.route)
+                                    },
+                                    navigateToCompass = {
+                                        navController.navigate(Screen.Compass.route)
                                     }
                                 )
                             }
@@ -168,6 +172,13 @@ class MainActivity : ComponentActivity() {
                             composable(Screen.Profile.route) {
                                 ProfileScreen(
                                     navigateToBack = {}
+                                )
+                            }
+                            composable(Screen.Compass.route) {
+                                CompassScreen(
+                                    navigateUp = {
+                                        navController.navigateUp()
+                                    }
                                 )
                             }
                             composable(Screen.TajweedDetect.route) {
