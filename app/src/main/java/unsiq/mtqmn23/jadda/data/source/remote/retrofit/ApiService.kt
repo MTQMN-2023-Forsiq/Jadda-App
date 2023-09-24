@@ -7,6 +7,7 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 import unsiq.mtqmn23.jadda.data.source.remote.response.DetailQuranResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DetailTajweedResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.HadistResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.LoginResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.QuranResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.RegisterResponse
@@ -54,4 +55,7 @@ interface ApiService {
     suspend fun getDetailSurah(
         @Path("surah_id") id: String
     ) : DetailQuranResponse
+
+    @GET("hadist")
+    suspend fun getAllHadist(): HadistResponse
 }

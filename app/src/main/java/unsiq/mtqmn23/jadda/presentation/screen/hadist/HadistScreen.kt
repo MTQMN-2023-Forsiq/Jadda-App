@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -22,19 +23,27 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import unsiq.mtqmn23.jadda.R
+import unsiq.mtqmn23.jadda.domain.model.hadist.HadistItem
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Gray
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
 import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
@@ -43,8 +52,17 @@ import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HadistScreen(
+    snackbarHostState: SnackbarHostState,
     navigateToBack: () -> Unit,
+    viewModel: HadistViewModel = hiltViewModel(),
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    state.statusMessage?.let {
+        LaunchedEffect(it) {
+            snackbarHostState.showSnackbar(it)
+        }
+    }
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -57,8 +75,7 @@ fun HadistScreen(
                         textAlign = TextAlign.Center,
                     )
                 },
-                modifier = Modifier
-                    .border(1.dp, color = Color.Gray.copy(alpha = 0.3f)),
+                modifier = Modifier,
                 navigationIcon = {
                     IconButton(
                         onClick = { navigateToBack() }
@@ -70,20 +87,22 @@ fun HadistScreen(
         },
     ) {
         Column {
-            HadistContent()
+            HadistContent(state.hadist)
         }
     }
 }
 
 @Composable
-fun HadistContent() {
+fun HadistContent(
+    hadist: List<HadistItem>,
+) {
     Spacer(modifier = Modifier.height(64.dp))
-    Row (
+    Row(
         modifier = Modifier
             .background(Green)
             .padding(6.dp)
             .fillMaxWidth()
-    ){
+    ) {
         Column(
             modifier = Modifier.weight(1f)
         ) {
@@ -106,16 +125,23 @@ fun HadistContent() {
         }
     }
 
-    val items = (1..20).toList()
-    LazyColumn{
-        items(items.size){item ->
-            Hadist()
+    LazyColumn {
+        itemsIndexed(items = hadist, key = { _, item -> item.number ?: 0 }) { index, item ->
+            Hadist(
+                item.number ?: 0,
+                item.textArab.toString(),
+                item.translation.toString(),
+            )
         }
     }
 }
 
 @Composable
-fun Hadist() {
+fun Hadist(
+    number: Int,
+    textArab: String,
+    translation: String,
+) {
     Column(
         modifier = Modifier.padding(14.dp)
     ) {
@@ -133,7 +159,7 @@ fun Hadist() {
                         .align(Alignment.Center)
                 )
                 Text(
-                    text = "1",
+                    text = number.toString(),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Black,
                     color = Color.White,
@@ -141,10 +167,10 @@ fun Hadist() {
                 )
             }
             Text(
-                text = "حَدَّثَنَا عَبْدُ اللَّهِ بْنُ مَسْلَمَةَ بْنِ قَعْنَبٍ الْقَعْنَبِيُّ حَدَّثَنَا عَبْدُ الْعَزِيزِ يَعْنِي ابْنَ مُحَمَّدٍ عَنْ مُحَمَّدٍ يَعْنِي ابْنَ عَمْرٍو عَنْ أَبِي سَلَمَةَ عَنْ الْمُغِيرَةِ بْنِ شُعْبَةَأَنَّ النَّبِيَّ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ كَانَ إِذَا ذَهَبَ الْمَذْهَبَ أَبْعَدَِِ",
-                color = Color.Black,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
+                text = textArab,
+                fontSize = 28.sp,
+                fontFamily = FontFamily(Font(R.font.arabic_regular)),
+                lineHeight = 40.sp,
                 modifier = Modifier
                     .padding(0.dp, 0.dp, 0.dp, 0.dp)
                     .weight(1f),
@@ -153,21 +179,11 @@ fun Hadist() {
         }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Telah menceritakan kepada kami [Abdullah bin Maslamah bin Qa'nab al Qa'nabi] telah menceritakan kepada kami [Abdul Aziz yakni bin Muhammad] dari [Muhammad yakni bin Amru] dari [Abu Salamah] dari [Al Mughirah bin Syu'bah] bahwasanya Nabi shallallahu 'alaihi wasallam apabila hendak pergi untuk buang hajat, maka beliau menjauh.",
+            text = translation,
             modifier = Modifier.fillMaxWidth(),
             fontSize = 12.sp,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Divider(color = Gray.copy(alpha = 0.5f), thickness = 1.dp)
-    }
-}
-
-@Preview
-@Composable
-fun HadistScreenPreview() {
-    JaddaTheme {
-        HadistScreen {
-
-        }
     }
 }
