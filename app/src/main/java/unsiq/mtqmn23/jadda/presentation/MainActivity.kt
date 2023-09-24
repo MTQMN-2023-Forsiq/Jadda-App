@@ -19,12 +19,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.get
+import androidx.navigation.navArgument
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
 import unsiq.mtqmn23.jadda.R
@@ -37,9 +39,11 @@ import unsiq.mtqmn23.jadda.presentation.screen.auth.register.RegisterScreen
 import unsiq.mtqmn23.jadda.presentation.screen.home.HomeScreen
 import unsiq.mtqmn23.jadda.presentation.screen.onboarding.OnBoardingScreen
 import unsiq.mtqmn23.jadda.presentation.screen.profile.ProfileScreen
+import unsiq.mtqmn23.jadda.presentation.screen.quran.detail.DetailSurahScreen
 import unsiq.mtqmn23.jadda.presentation.screen.salat.SalatScreen
 import unsiq.mtqmn23.jadda.presentation.screen.salatpractice.SalatPracticeScreen
 import unsiq.mtqmn23.jadda.presentation.screen.splash.SplashScreen
+import unsiq.mtqmn23.jadda.presentation.screen.tajweed.TajweedScreen
 import unsiq.mtqmn23.jadda.presentation.screen.tajweeddetect.TajweedDetectScreen
 import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
 import unsiq.mtqmn23.jadda.util.sharedViewModel
@@ -102,6 +106,9 @@ class MainActivity : ComponentActivity() {
                                     },
                                     navigateToPracticeSalat = {
                                         navController.navigate("salat-graph")
+                                    },
+                                    navigateToDetailTajweed = {
+                                        navController.navigate(Screen.Tajweed.createRoute(it))
                                     }
                                 )
                             }
@@ -109,7 +116,27 @@ class MainActivity : ComponentActivity() {
 
                             }
                             composable(Screen.Quran.route) {
-                                QuranScreen()
+                                QuranScreen(
+                                    snackbarHostState = snackbarHostState,
+                                    navigateToDetail = {
+                                        navController.navigate(Screen.QuranDetail.createRoute(it.toString()))
+                                    }
+                                )
+                            }
+                            composable(
+                                Screen.QuranDetail.route,
+                                arguments = listOf(
+                                    navArgument("id") { type = NavType.StringType }
+                                )
+                            ) {
+                                val id = it.arguments?.getString("id") ?: ""
+                                DetailSurahScreen(
+                                    id = id,
+                                    snackbarHostState = snackbarHostState,
+                                    navigateToBack = {
+                                        navController.navigateUp()
+                                    }
+                                )
                             }
                             composable(Screen.Profile.route) {
                                 ProfileScreen(
@@ -122,6 +149,21 @@ class MainActivity : ComponentActivity() {
                                         navController.navigateUp()
                                     },
                                     snackbarHostState = snackbarHostState
+                                )
+                            }
+                            composable(
+                                route = Screen.Tajweed.route,
+                                arguments = listOf(
+                                    navArgument("id") { type = NavType.StringType }
+                                )
+                            ) {
+                                val id = it.arguments?.getString("id") ?: "0"
+                                TajweedScreen(
+                                    id = id,
+                                    snackbarHostState = snackbarHostState,
+                                    navigateUp = {
+                                        navController.navigateUp()
+                                    }
                                 )
                             }
                             navigation(

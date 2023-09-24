@@ -3,6 +3,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -24,26 +25,44 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import unsiq.mtqmn23.jadda.R
+import unsiq.mtqmn23.jadda.presentation.screen.quran.QuranViewModel
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Gray
 import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
 
 @Composable
-fun QuranScreen() {
-    Surface(
-        color = Color.White
-    ) {
-        Column {
-            ExpandableSearchView(
-                searchDisplay = "",
-                onSearchDisplayChanged = {},
-                onSearchDisplayClosed = {}
-            )
-            val items = (1..20).toList()
-            LazyColumn {
-                items(items.size) { item ->
-                    Surah()
-                }
+fun QuranScreen(
+    snackbarHostState: SnackbarHostState,
+    navigateToDetail: (Int?) -> Unit,
+    viewModel: QuranViewModel = hiltViewModel()
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    state.statusMessage?.let {
+        LaunchedEffect(it) {
+            snackbarHostState.showSnackbar(it)
+        }
+    }
+
+    Column(Modifier.fillMaxSize()) {
+        ExpandableSearchView(
+            searchDisplay = "",
+            onSearchDisplayChanged = {},
+            onSearchDisplayClosed = {}
+        )
+        LazyColumn {
+            itemsIndexed(items = state.surah, key = { _, item -> item.id ?: 0 }) { index, item ->
+                Surah(
+                    title = item.name.toString(),
+                    number = index + 1,
+                    shortName = item.shortName.toString(),
+                    description = "${item.revelation} \u2022 ${item.translation}",
+                    modifier = Modifier.clickable {
+                        navigateToDetail(item.id)
+                    }
+                )
             }
         }
     }
@@ -63,7 +82,7 @@ fun ExpandableSearchView(
     }
 
 
-    Crossfade(targetState = expanded) { isSearchFieldVisible ->
+    Crossfade(targetState = expanded, label = "") { isSearchFieldVisible ->
         when (isSearchFieldVisible) {
             true -> ExpandedSearchView(
                 searchDisplay = searchDisplay,
@@ -185,13 +204,16 @@ fun ExpandedSearchView(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Surah() {
+fun Surah(
+    title: String,
+    number: Int,
+    shortName: String,
+    description: String,
+    modifier: Modifier = Modifier,
+) {
     Box(
-       modifier = Modifier.clickable{
-
-       },
+       modifier = modifier
     ) {
         Row(
             modifier = Modifier.padding(14.dp),
@@ -208,9 +230,8 @@ fun Surah() {
                             .align(Alignment.Center)
                     )
                     Text(
-                        text = "1",
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Black,
+                        text = "$number",
+                        fontSize = 18.sp,
                         color = Color.White,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -221,19 +242,19 @@ fun Surah() {
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = "Al-Fatihah",
-                    fontSize = 15.sp,
+                    text = title,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
-                    text = "Makiyyah - Pembuka",
+                    text = description,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Light
                 )
             }
             Column {
                 Text(
-                    text = "الفاتحة",
+                    text = shortName,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                 )
@@ -282,15 +303,7 @@ fun SurahPreview() {
         Surface(
             color = Color.White
         ) {
-            Surah()
-        }
-    }
-}
 
-@Preview
-@Composable
-fun QuranScreenPreview() {
-    JaddaTheme {
-        QuranScreen()
+        }
     }
 }
