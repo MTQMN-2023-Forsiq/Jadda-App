@@ -49,7 +49,6 @@ fun TafsirScreen(
                         text = "Tafsir As-Salam",
                         color = Color.Black,
                         fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 0.dp),
                         textAlign = TextAlign.Center,
                     )
