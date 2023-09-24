@@ -164,7 +164,7 @@ class MainActivity : ComponentActivity() {
                             }
                             composable(Screen.Profile.route) {
                                 ProfileScreen(
-                                    navigateToBack = {}
+                                    snackbarHostState = snackbarHostState,
                                 )
                             }
                             composable(Screen.TajweedDetect.route) {

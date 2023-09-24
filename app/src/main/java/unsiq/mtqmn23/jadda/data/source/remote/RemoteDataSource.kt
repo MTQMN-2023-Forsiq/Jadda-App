@@ -25,4 +25,6 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
 
     suspend fun getAllHadist() = apiService.getAllHadist()
     suspend fun getAllTafsir() = apiService.getAllTafsir()
+
+    suspend fun getProfile() = apiService.getProfile()
 }

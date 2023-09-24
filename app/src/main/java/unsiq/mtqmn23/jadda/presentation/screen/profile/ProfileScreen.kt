@@ -20,8 +20,11 @@ import androidx.compose.material.icons.filled.Leaderboard
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,9 +33,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import unsiq.mtqmn23.jadda.R
+import unsiq.mtqmn23.jadda.domain.model.profile.ProfileItem
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Black
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
 import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
@@ -41,8 +47,16 @@ import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
-    navigateToBack: () -> Unit,
+    snackbarHostState: SnackbarHostState,
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    state.statusMessage.let {
+        LaunchedEffect(it){
+            snackbarHostState.showSnackbar(it.toString())
+        }
+    }
+
     Column {
         Box(
             modifier = Modifier.padding(16.dp)
@@ -53,13 +67,15 @@ fun ProfileScreen(
                 modifier = Modifier.align(Alignment.Center)
             )
         }
-        ProfileContent()
+        ProfileContent(state.profile)
     }
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ProfileContent() {
+fun ProfileContent(
+    profile: ProfileItem
+) {
     Spacer(modifier = Modifier.height(60.dp))
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -67,7 +83,7 @@ fun ProfileContent() {
             .fillMaxWidth()
             .padding(14.dp)
     ) {
-        val path = "https://qive.rumahdigitalit.com/assets/images/avatar.png"
+        val path = profile.avatar
         GlideImage(
             model = path,
             contentDescription = "Image",
@@ -82,7 +98,7 @@ fun ProfileContent() {
         }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Sumpeno",
+            text = profile.name.toString(),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold
         )
@@ -95,7 +111,7 @@ fun ProfileContent() {
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = "1200",
+                    text = profile.point.toString(),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -109,7 +125,7 @@ fun ProfileContent() {
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = "20",
+                    text = profile.task_complete.toString(),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -142,7 +158,7 @@ fun ProfileContent() {
                     color = Color.White,
                 )
                 Text(
-                    text = "5th (Good Job)",
+                    text = if (profile.ranking != 0) "${profile.ranking.toString()}th (Good Job)" else "- -",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
@@ -163,7 +179,7 @@ fun ProfileContent() {
                             .align(Alignment.Center)
                     )
                     Text(
-                        text = "5",
+                        text = if (profile.ranking != 0) profile.ranking.toString() else "-",
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Black,
                         color = Color.White,
@@ -239,16 +255,6 @@ fun IconTextButton(
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold
             )
-        }
-    }
-}
-
-@Preview
-@Composable
-fun ProfileScreenPreiew() {
-    JaddaTheme {
-        ProfileScreen {
-
         }
     }
 }

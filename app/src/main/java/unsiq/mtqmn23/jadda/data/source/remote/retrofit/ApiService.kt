@@ -9,6 +9,7 @@ import unsiq.mtqmn23.jadda.data.source.remote.response.DetailQuranResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DetailTajweedResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.HadistResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.LoginResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.ProfileResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.QuranResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.RegisterResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.SalatResponse
@@ -62,4 +63,7 @@ interface ApiService {
 
     @GET("tafsirs")
     suspend fun getAllTafsir(): TafsirResponse
+
+    @GET("user")
+    suspend fun getProfile(): ProfileResponse
 }

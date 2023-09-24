@@ -4,9 +4,8 @@ import unsiq.mtqmn23.jadda.data.source.remote.response.DataHadistResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DataSalatItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DataSurahResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DateResponse
-import unsiq.mtqmn23.jadda.data.source.remote.response.HadistItemResponse
-import unsiq.mtqmn23.jadda.data.source.remote.response.HadistResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.MovementAngleResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.ProfileItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.QuranDataItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TafsirDataItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedContentItemResponse
@@ -14,6 +13,7 @@ import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedDataItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TimesResponse
 import unsiq.mtqmn23.jadda.domain.model.hadist.DataHadist
 import unsiq.mtqmn23.jadda.domain.model.hadist.HadistItem
+import unsiq.mtqmn23.jadda.domain.model.profile.ProfileItem
 import unsiq.mtqmn23.jadda.domain.model.quran.DataSurah
 import unsiq.mtqmn23.jadda.domain.model.quran.QuranDataItem
 import unsiq.mtqmn23.jadda.domain.model.quran.VersesItem
@@ -165,5 +165,16 @@ fun TafsirDataItemResponse.toDomain(): TafsirDataItem{
     return TafsirDataItem(
         id = id,
         image = image,
+    )
+}
+
+fun ProfileItemResponse.toDomain(): ProfileItem{
+    return ProfileItem(
+        name = name,
+        email = email,
+        avatar = avatar,
+        ranking = ranking,
+        point = point,
+        task_complete = taskComplete,
     )
 }
