@@ -69,6 +69,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import unsiq.mtqmn23.jadda.domain.model.tajweed.TajweedContentItem
 import unsiq.mtqmn23.jadda.presentation.components.RoundedButton
+import unsiq.mtqmn23.jadda.presentation.screen.quran.detail.MyAudioPlayer
 import unsiq.mtqmn23.jadda.presentation.screen.tajweeddetect.components.ResultsOverlay
 import unsiq.mtqmn23.jadda.presentation.screen.tajweeddetect.objectdetector.ObjectDetectorHelper
 import unsiq.mtqmn23.jadda.presentation.screen.tajweeddetect.objectdetector.ObjectDetectorListener
@@ -264,8 +265,8 @@ fun TajweedDetectContent(
                 )
                 Spacer(Modifier.height(16.dp))
                 detailTajweed.audioUrl?.let {
-                    AudioPlayer(
-                        audioUrl = it
+                    MyAudioPlayer(
+                        audio = it
                     )
                 }
             }
@@ -413,17 +414,4 @@ fun CameraView(
             }
         }
     }
-}
-
-@Composable
-@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
-fun AudioPlayer(
-    audioUrl: String,
-    modifier: Modifier = Modifier,
-) {
-    val context = LocalContext.current
-
-
-
-
 }
