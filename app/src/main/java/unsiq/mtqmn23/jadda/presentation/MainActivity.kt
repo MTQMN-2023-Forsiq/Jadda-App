@@ -36,6 +36,7 @@ import unsiq.mtqmn23.jadda.presentation.navigation.NavigationItem
 import unsiq.mtqmn23.jadda.presentation.navigation.Screen
 import unsiq.mtqmn23.jadda.presentation.screen.auth.login.LoginScreen
 import unsiq.mtqmn23.jadda.presentation.screen.auth.register.RegisterScreen
+import unsiq.mtqmn23.jadda.presentation.screen.hadist.HadistScreen
 import unsiq.mtqmn23.jadda.presentation.screen.home.HomeScreen
 import unsiq.mtqmn23.jadda.presentation.screen.onboarding.OnBoardingScreen
 import unsiq.mtqmn23.jadda.presentation.screen.profile.ProfileScreen
@@ -43,6 +44,7 @@ import unsiq.mtqmn23.jadda.presentation.screen.quran.detail.DetailSurahScreen
 import unsiq.mtqmn23.jadda.presentation.screen.salat.SalatScreen
 import unsiq.mtqmn23.jadda.presentation.screen.salatpractice.SalatPracticeScreen
 import unsiq.mtqmn23.jadda.presentation.screen.splash.SplashScreen
+import unsiq.mtqmn23.jadda.presentation.screen.tafsir.TafsirScreen
 import unsiq.mtqmn23.jadda.presentation.screen.tajweed.TajweedScreen
 import unsiq.mtqmn23.jadda.presentation.screen.tajweeddetect.TajweedDetectScreen
 import unsiq.mtqmn23.jadda.presentation.screen.watch.WatchScreen
@@ -136,7 +138,7 @@ class MainActivity : ComponentActivity() {
                                 HadistScreen(
                                     snackbarHostState = snackbarHostState,
                                     navigateToBack = {
-                                        navController.navigate(Screen.Home.route)
+                                        navController.navigateUp()
                                     }
                                 )
                             }
@@ -144,7 +146,7 @@ class MainActivity : ComponentActivity() {
                                 TafsirScreen(
                                     snackbarHostState = snackbarHostState,
                                     navigateToBack = {
-                                        navController.navigate(Screen.Home.route)
+                                        navController.navigateUp()
                                     }
                                 )
                             }

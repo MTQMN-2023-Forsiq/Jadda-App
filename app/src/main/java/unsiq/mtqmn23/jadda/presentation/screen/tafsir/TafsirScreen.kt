@@ -2,7 +2,6 @@ package unsiq.mtqmn23.jadda.presentation.screen.tafsir
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,8 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -31,8 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -41,7 +37,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import unsiq.mtqmn23.jadda.R
 import unsiq.mtqmn23.jadda.domain.model.tafsir.TafsirDataItem
-import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
+import unsiq.mtqmn23.jadda.presentation.components.RoundedButton
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,19 +60,16 @@ fun TafsirScreen(
                 title = {
                     Text(
                         text = "Tafsir As-Salam",
-                        color = Color.Black,
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 0.dp),
-                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleLarge,
                     )
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.White),
                 navigationIcon = {
-                    IconButton(
-                        onClick = { navigateToBack() }
-                    ) {
-                        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
-                    }
+                    RoundedButton(
+                        icon = Icons.Default.ArrowBack,
+                        onClick = navigateToBack,
+                        modifier = Modifier.padding(16.dp)
+                    )
                 }
             )
         },

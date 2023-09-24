@@ -167,9 +167,9 @@ fun HomeContent(
         }
         item {
             FeatureCard(
-                navigateToTafsir = {},
+                navigateToTafsir = navigateToTafsir,
                 navigateToCompass = {},
-                navigateToHadits = {},
+                navigateToHadits = navigateToHadist,
                 navigateToPracticeSalat = navigateToPracticeSalat,
                 navigateToRanking = {},
                 navigateToTajweedDetection = navigateToTajweedDetection,

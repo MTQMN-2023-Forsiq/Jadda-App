@@ -1,8 +1,10 @@
 package unsiq.mtqmn23.jadda.data.repository
 
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import unsiq.mtqmn23.jadda.data.source.remote.RemoteDataSource
 import unsiq.mtqmn23.jadda.data.source.remote.response.TafsirDataItemResponse
+import unsiq.mtqmn23.jadda.domain.model.tafsir.TafsirDataItem
 import unsiq.mtqmn23.jadda.domain.repository.TafsirRepository
 import unsiq.mtqmn23.jadda.util.Result
 import unsiq.mtqmn23.jadda.util.toDomain
@@ -13,7 +15,7 @@ import javax.inject.Singleton
 class TafsirRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
 ): TafsirRepository {
-    override fun getAllTafsir() = flow {
+    override fun getAllTafsir(): Flow<Result<List<TafsirDataItem>>> = flow {
         emit(Result.Loading())
         try {
             val response = remoteDataSource.getAllTafsir()

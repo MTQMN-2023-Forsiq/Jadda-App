@@ -19,8 +19,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -42,6 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import unsiq.mtqmn23.jadda.R
 import unsiq.mtqmn23.jadda.domain.model.hadist.HadistItem
+import unsiq.mtqmn23.jadda.presentation.components.RoundedButton
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Gray
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
 
@@ -65,20 +65,17 @@ fun HadistScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Hadist",
-                        color = Color.Black,
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 0.dp),
-                        textAlign = TextAlign.Center,
+                        text = "Hadits",
+                        style = MaterialTheme.typography.titleLarge,
                     )
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.White),
                 navigationIcon = {
-                    IconButton(
-                        onClick = { navigateToBack() }
-                    ) {
-                        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
-                    }
+                    RoundedButton(
+                        icon = Icons.Default.ArrowBack,
+                        onClick = navigateToBack,
+                        modifier = Modifier.padding(16.dp)
+                    )
                 }
             )
         },
