@@ -3,7 +3,6 @@ package unsiq.mtqmn23.jadda.presentation.screen.quran.detail
 import android.annotation.SuppressLint
 import android.media.AudioManager
 import android.media.MediaPlayer
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -262,18 +261,15 @@ fun MyAudioPlayer(audio: String, modifier: Modifier = Modifier) {
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                    Toast.makeText(ctx, "Audio started playing..", Toast.LENGTH_SHORT).show()
                 } else {
                     if (!isAudioComplete) {
                         mediaPlayer.pause()
                         isPlaying = false
-                        Toast.makeText(ctx, "Audio paused..", Toast.LENGTH_SHORT).show()
                     } else {
                         mediaPlayer.seekTo(0)
                         mediaPlayer.start()
                         isPlaying = true
                         isAudioComplete = false
-                        Toast.makeText(ctx, "Audio restarted..", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -296,6 +292,7 @@ fun MyAudioPlayer(audio: String, modifier: Modifier = Modifier) {
         val listener = MediaPlayer.OnCompletionListener {
             isPlaying = false
             isAudioComplete = true
+            mediaPlayer.reset()
         }
         mediaPlayer.setOnCompletionListener(listener)
         onDispose {
