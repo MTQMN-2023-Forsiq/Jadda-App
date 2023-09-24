@@ -36,6 +36,7 @@ import unsiq.mtqmn23.jadda.presentation.navigation.NavigationItem
 import unsiq.mtqmn23.jadda.presentation.navigation.Screen
 import unsiq.mtqmn23.jadda.presentation.screen.auth.login.LoginScreen
 import unsiq.mtqmn23.jadda.presentation.screen.auth.register.RegisterScreen
+import unsiq.mtqmn23.jadda.presentation.screen.compass.CompassScreen
 import unsiq.mtqmn23.jadda.presentation.screen.hadist.HadistScreen
 import unsiq.mtqmn23.jadda.presentation.screen.home.HomeScreen
 import unsiq.mtqmn23.jadda.presentation.screen.onboarding.OnBoardingScreen
@@ -47,6 +48,7 @@ import unsiq.mtqmn23.jadda.presentation.screen.splash.SplashScreen
 import unsiq.mtqmn23.jadda.presentation.screen.tafsir.TafsirScreen
 import unsiq.mtqmn23.jadda.presentation.screen.tajweed.TajweedScreen
 import unsiq.mtqmn23.jadda.presentation.screen.tajweeddetect.TajweedDetectScreen
+import unsiq.mtqmn23.jadda.presentation.screen.watch.WatchScreen
 import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
 import unsiq.mtqmn23.jadda.util.sharedViewModel
 
@@ -117,11 +119,16 @@ class MainActivity : ComponentActivity() {
                                     },
                                     navigateToHadist = {
                                         navController.navigate(Screen.Hadist.route)
+                                    },
+                                    navigateToCompass = {
+                                        navController.navigate(Screen.Compass.route)
                                     }
                                 )
                             }
                             composable(Screen.Watch.route) {
-
+                                WatchScreen(
+                                    snackbarHostState = snackbarHostState,
+                                )
                             }
                             composable(Screen.Quran.route) {
                                 QuranScreen(
@@ -135,7 +142,7 @@ class MainActivity : ComponentActivity() {
                                 HadistScreen(
                                     snackbarHostState = snackbarHostState,
                                     navigateToBack = {
-                                        navController.navigate(Screen.Home.route)
+                                        navController.navigateUp()
                                     }
                                 )
                             }
@@ -143,7 +150,7 @@ class MainActivity : ComponentActivity() {
                                 TafsirScreen(
                                     snackbarHostState = snackbarHostState,
                                     navigateToBack = {
-                                        navController.navigate(Screen.Home.route)
+                                        navController.navigateUp()
                                     }
                                 )
                             }
@@ -165,6 +172,13 @@ class MainActivity : ComponentActivity() {
                             composable(Screen.Profile.route) {
                                 ProfileScreen(
                                     snackbarHostState = snackbarHostState,
+                                )
+                            }
+                            composable(Screen.Compass.route) {
+                                CompassScreen(
+                                    navigateUp = {
+                                        navController.navigateUp()
+                                    }
                                 )
                             }
                             composable(Screen.TajweedDetect.route) {

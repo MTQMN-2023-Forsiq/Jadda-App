@@ -2,6 +2,7 @@ package unsiq.mtqmn23.jadda.presentation.screen.home.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -16,14 +17,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ItemFeature(
+fun RowScope.ItemFeature(
     onClick: () -> Unit,
     title: String,
     icon: ImageVector,
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.clickable {
+        modifier = modifier.weight(1f).clickable {
             onClick()
         },
         horizontalAlignment = Alignment.CenterHorizontally

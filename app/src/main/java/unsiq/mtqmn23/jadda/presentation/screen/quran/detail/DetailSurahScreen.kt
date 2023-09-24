@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,6 +25,7 @@ import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -80,40 +80,48 @@ fun DetailSurahScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        text = state.dataSurah.shortName.toString(),
-                        color = Color.Black,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 0.dp),
-                        textAlign = TextAlign.Center,
-                    )
-                },
-                modifier = Modifier,
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Color.White
-                ),
-                navigationIcon = {
-                    IconButton(
-                        onClick = { navigateToBack() }
-                    ) {
-                        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
+    if (state.isLoading) {
+        Box(Modifier.fillMaxSize()) {
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+    } else {
+        Scaffold(
+            topBar = {
+                CenterAlignedTopAppBar(
+                    title = {
+                        Text(
+                            text = state.dataSurah.shortName.toString(),
+                            color = Color.Black,
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 0.dp),
+                            textAlign = TextAlign.Center,
+                        )
+                    },
+                    modifier = Modifier,
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = Color.White
+                    ),
+                    navigationIcon = {
+                        IconButton(
+                            onClick = { navigateToBack() }
+                        ) {
+                            Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
+                        }
                     }
-                }
-            )
-        },
-    ) {
-        Column {
-            SurahContent(
-                title = state.dataSurah.name.toString(),
-                ayatCount = state.dataSurah.ayat ?: 0,
-                revelation = state.dataSurah.revelation.toString(),
-                verses = state.dataSurah.verses
-            )
+                )
+            },
+        ) {
+            Column {
+                SurahContent(
+                    title = state.dataSurah.name.toString(),
+                    ayatCount = state.dataSurah.ayat ?: 0,
+                    revelation = state.dataSurah.revelation.toString(),
+                    verses = state.dataSurah.verses
+                )
+            }
         }
     }
 }
@@ -176,7 +184,7 @@ fun Ayat(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = Modifier.padding(14.dp)
+        modifier = modifier.padding(14.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -218,12 +226,13 @@ fun Ayat(
         )
         Spacer(modifier = Modifier.height(4.dp))
         MyAudioPlayer(audio = audio)
+        Spacer(Modifier.height(8.dp))
         Divider(color = Gray.copy(alpha = 0.5f), thickness = 1.dp)
     }
 }
 
 @Composable
-fun MyAudioPlayer(audio: String) {
+fun MyAudioPlayer(audio: String, modifier: Modifier = Modifier) {
     val ctx = LocalContext.current
     val mediaPlayer = remember { MediaPlayer() }
     var isPlaying by remember { mutableStateOf(false) }
@@ -236,22 +245,16 @@ fun MyAudioPlayer(audio: String) {
     }
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .fillMaxSize()
-            .padding(6.dp),
+        modifier = modifier,
     ) {
         Spacer(modifier = Modifier.weight(1f))
         Button(
-            modifier = Modifier
-                .padding(6.dp),
+            modifier = Modifier,
             onClick = {
                 if (!isPlaying) {
-                    val audioUrl = audio
                     mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
                     try {
-                        mediaPlayer.setDataSource(audioUrl)
+                        mediaPlayer.setDataSource(audio)
                         mediaPlayer.prepare()
                         mediaPlayer.start()
                         isPlaying = true

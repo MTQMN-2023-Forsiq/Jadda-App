@@ -4,6 +4,8 @@ import unsiq.mtqmn23.jadda.data.source.remote.response.DataHadistResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DataSalatItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DataSurahResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.DateResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.HadistItemResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.HadistResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.MovementAngleResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.ProfileItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.QuranDataItemResponse
@@ -11,6 +13,7 @@ import unsiq.mtqmn23.jadda.data.source.remote.response.TafsirDataItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedContentItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedDataItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TimesResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.WatchDataItemResponse
 import unsiq.mtqmn23.jadda.domain.model.hadist.DataHadist
 import unsiq.mtqmn23.jadda.domain.model.hadist.HadistItem
 import unsiq.mtqmn23.jadda.domain.model.profile.ProfileItem
@@ -24,6 +27,7 @@ import unsiq.mtqmn23.jadda.domain.model.salat.SalatTimes
 import unsiq.mtqmn23.jadda.domain.model.tafsir.TafsirDataItem
 import unsiq.mtqmn23.jadda.domain.model.tajweed.TajweedContentItem
 import unsiq.mtqmn23.jadda.domain.model.tajweed.TajweedDataItem
+import unsiq.mtqmn23.jadda.domain.model.watch.WatchDataItem
 import unsiq.mtqmn23.jadda.presentation.screen.salatpractice.model.PersonBodyAngle
 
 fun TajweedDataItemResponse.toDomain(): TajweedDataItem {
@@ -176,5 +180,14 @@ fun ProfileItemResponse.toDomain(): ProfileItem{
         ranking = ranking,
         point = point,
         task_complete = taskComplete,
+    )
+}
+
+fun WatchDataItemResponse.toDomain(): WatchDataItem {
+    return WatchDataItem(
+        videoUrl = videoUrl,
+        id = id,
+        title = title,
+        info = info,
     )
 }

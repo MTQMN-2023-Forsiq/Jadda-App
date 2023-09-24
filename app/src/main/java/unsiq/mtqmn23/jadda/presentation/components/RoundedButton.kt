@@ -10,6 +10,7 @@ import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +28,7 @@ fun RoundedButton(
     Box(
         modifier = modifier
             .background(color = BlueSky, shape = RoundedCornerShape(35))
+            .clip(RoundedCornerShape(35))
             .clickable { onClick() }
     ) {
         Icon(

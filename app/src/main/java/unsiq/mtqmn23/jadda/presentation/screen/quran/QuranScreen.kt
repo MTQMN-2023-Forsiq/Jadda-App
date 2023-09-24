@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import unsiq.mtqmn23.jadda.R
 import unsiq.mtqmn23.jadda.presentation.screen.quran.QuranViewModel
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Gray
@@ -39,6 +40,14 @@ fun QuranScreen(
     viewModel: QuranViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val systemUiController = rememberSystemUiController()
+
+    SideEffect {
+        systemUiController.apply {
+            setStatusBarColor(color = Color.White)
+            setNavigationBarColor(color = Color.White)
+        }
+    }
 
     state.statusMessage?.let {
         LaunchedEffect(it) {
@@ -52,17 +61,25 @@ fun QuranScreen(
             onSearchDisplayChanged = {},
             onSearchDisplayClosed = {}
         )
-        LazyColumn {
-            itemsIndexed(items = state.surah, key = { _, item -> item.id ?: 0 }) { index, item ->
-                Surah(
-                    title = item.name.toString(),
-                    number = index + 1,
-                    shortName = item.shortName.toString(),
-                    description = "${item.revelation} \u2022 ${item.translation}",
-                    modifier = Modifier.clickable {
-                        navigateToDetail(item.id)
-                    }
+        if (state.isLoading) {
+            Box(Modifier.fillMaxSize()) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
                 )
+            }
+        } else {
+            LazyColumn {
+                itemsIndexed(items = state.surah, key = { _, item -> item.id ?: 0 }) { index, item ->
+                    Surah(
+                        title = item.name.toString(),
+                        number = index + 1,
+                        shortName = item.shortName.toString(),
+                        description = "${item.revelation} \u2022 ${item.translation}",
+                        modifier = Modifier.clickable {
+                            navigateToDetail(item.id)
+                        }
+                    )
+                }
             }
         }
     }
@@ -244,7 +261,7 @@ fun Surah(
                 Text(
                     text = title,
                     fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Normal
                 )
                 Text(
                     text = description,

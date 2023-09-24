@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,12 +34,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import unsiq.mtqmn23.jadda.R
-import unsiq.mtqmn23.jadda.domain.model.profile.ProfileItem
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Black
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
 import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
@@ -56,6 +54,14 @@ fun ProfileScreen(
             snackbarHostState.showSnackbar(it.toString())
         }
     }
+    val systemUiController = rememberSystemUiController()
+
+    SideEffect {
+        systemUiController.apply {
+            setStatusBarColor(color = Color.White)
+            setNavigationBarColor(color = Color.White)
+        }
+    }
 
     Column {
         Box(
@@ -67,15 +73,13 @@ fun ProfileScreen(
                 modifier = Modifier.align(Alignment.Center)
             )
         }
-        ProfileContent(state.profile)
+        ProfileContent()
     }
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ProfileContent(
-    profile: ProfileItem
-) {
+fun ProfileContent() {
     Spacer(modifier = Modifier.height(60.dp))
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -83,7 +87,7 @@ fun ProfileContent(
             .fillMaxWidth()
             .padding(14.dp)
     ) {
-        val path = profile.avatar
+        val path = "https://qive.rumahdigitalit.com/assets/images/avatar.png"
         GlideImage(
             model = path,
             contentDescription = "Image",
@@ -98,7 +102,7 @@ fun ProfileContent(
         }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = profile.name.toString(),
+            text = "Sumpeno",
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold
         )
@@ -111,7 +115,7 @@ fun ProfileContent(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = profile.point.toString(),
+                    text = "1200",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -125,7 +129,7 @@ fun ProfileContent(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = profile.task_complete.toString(),
+                    text = "20",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -158,7 +162,7 @@ fun ProfileContent(
                     color = Color.White,
                 )
                 Text(
-                    text = if (profile.ranking != 0) "${profile.ranking.toString()}th (Good Job)" else "- -",
+                    text = "5th (Good Job)",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
@@ -179,7 +183,7 @@ fun ProfileContent(
                             .align(Alignment.Center)
                     )
                     Text(
-                        text = if (profile.ranking != 0) profile.ranking.toString() else "-",
+                        text = "5",
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Black,
                         color = Color.White,
