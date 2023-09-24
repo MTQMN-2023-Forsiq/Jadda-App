@@ -45,4 +45,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun provideWatchRepository(watchRepositoryImpl: WatchRepositoryImpl): WatchRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideTafsirRepository(tafsirRepositoryImpl: TafsirRepositoryImpl): TafsirRepository
 }

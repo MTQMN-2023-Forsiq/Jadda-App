@@ -2,21 +2,22 @@ package unsiq.mtqmn23.jadda.data.repository
 
 import kotlinx.coroutines.flow.flow
 import unsiq.mtqmn23.jadda.data.source.remote.RemoteDataSource
-import unsiq.mtqmn23.jadda.domain.repository.HadistRepository
+import unsiq.mtqmn23.jadda.data.source.remote.response.TafsirDataItemResponse
+import unsiq.mtqmn23.jadda.domain.repository.TafsirRepository
 import unsiq.mtqmn23.jadda.util.Result
 import unsiq.mtqmn23.jadda.util.toDomain
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class HadistRepositoryImpl @Inject constructor(
+class TafsirRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
-): HadistRepository {
-    override fun getAllHadist() = flow {
+): TafsirRepository {
+    override fun getAllTafsir() = flow {
         emit(Result.Loading())
         try {
-            val response = remoteDataSource.getAllHadist()
-            val result = response.data.toDomain()
+            val response = remoteDataSource.getAllTafsir()
+            val result = response.data.map(TafsirDataItemResponse::toDomain)
             emit(Result.Success(result))
         } catch (e: Exception) {
             emit(Result.Error("Terjadi Kesalahan"))

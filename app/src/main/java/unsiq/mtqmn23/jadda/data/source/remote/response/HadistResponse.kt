@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class HadistResponse(
 
 	@field:SerializedName("data")
-	val data: Data,
+	val data: DataHadistResponse,
 
 	@field:SerializedName("error")
 	val error: Boolean? = null,
@@ -14,10 +14,10 @@ data class HadistResponse(
 	val message: String? = null
 )
 
-data class Data(
+data class DataHadistResponse(
 
 	@field:SerializedName("hadiths")
-	val hadiths: List<HadistItemResponse>,
+	val hadist: List<HadistItemResponse>,
 
 	@field:SerializedName("requested")
 	val requested: Int? = null,
@@ -26,7 +26,7 @@ data class Data(
 	val name: String? = null,
 
 	@field:SerializedName("available")
-	val availabl: Int? = null,
+	val available: Int? = null,
 
 	@field:SerializedName("id")
 	val id: String? = null

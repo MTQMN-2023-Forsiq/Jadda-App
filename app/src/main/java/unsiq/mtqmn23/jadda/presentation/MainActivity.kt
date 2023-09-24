@@ -132,6 +132,22 @@ class MainActivity : ComponentActivity() {
                                     }
                                 )
                             }
+                            composable(Screen.Hadist.route){
+                                HadistScreen(
+                                    snackbarHostState = snackbarHostState,
+                                    navigateToBack = {
+                                        navController.navigate(Screen.Home.route)
+                                    }
+                                )
+                            }
+                            composable(Screen.Tafsir.route){
+                                TafsirScreen(
+                                    snackbarHostState = snackbarHostState,
+                                    navigateToBack = {
+                                        navController.navigate(Screen.Home.route)
+                                    }
+                                )
+                            }
                             composable(
                                 Screen.QuranDetail.route,
                                 arguments = listOf(

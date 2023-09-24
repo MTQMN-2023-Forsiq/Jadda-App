@@ -14,7 +14,6 @@ import unsiq.mtqmn23.jadda.data.source.remote.response.RegisterResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.SalatResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.SalatScheduleResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedResponse
-import unsiq.mtqmn23.jadda.data.source.remote.response.WatchResponse
 
 interface ApiService {
 
@@ -62,4 +61,7 @@ interface ApiService {
 
     @GET("videos")
     suspend fun getVideos(): WatchResponse
+
+    @GET("tafsirs")
+    suspend fun getAllTafsir(): TafsirResponse
 }
