@@ -48,7 +48,7 @@ fun ProfileScreen(
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = "Praktik Sholat",
+                text = "Profil",
                 style = androidx.compose.material3.MaterialTheme.typography.titleLarge,
                 modifier = Modifier.align(Alignment.Center)
             )
