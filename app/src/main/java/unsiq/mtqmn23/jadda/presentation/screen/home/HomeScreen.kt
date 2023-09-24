@@ -122,7 +122,9 @@ fun HomeScreen(
         onTajweedCardClick = {
             viewModel.onEvent(HomeEvent.OnTajweedCardClick(it))
         },
-        navigateToDetailTajweed = navigateToDetailTajweed
+        navigateToDetailTajweed = navigateToDetailTajweed,
+        navigateToHadist = navigateToHadist,
+        navigateToTafsir = navigateToTafsir,
     )
 }
 
@@ -165,9 +167,9 @@ fun HomeContent(
         }
         item {
             FeatureCard(
-                navigateToTafsir = {},
+                navigateToTafsir = navigateToTafsir,
                 navigateToCompass = {},
-                navigateToHadits = {},
+                navigateToHadits = navigateToHadist,
                 navigateToPracticeSalat = navigateToPracticeSalat,
                 navigateToRanking = {},
                 navigateToTajweedDetection = navigateToTajweedDetection,

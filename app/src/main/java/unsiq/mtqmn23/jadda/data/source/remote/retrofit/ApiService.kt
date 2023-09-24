@@ -13,6 +13,7 @@ import unsiq.mtqmn23.jadda.data.source.remote.response.QuranResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.RegisterResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.SalatResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.SalatScheduleResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.TafsirResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedResponse
 
 interface ApiService {
@@ -58,4 +59,7 @@ interface ApiService {
 
     @GET("hadist")
     suspend fun getAllHadist(): HadistResponse
+
+    @GET("tafsirs")
+    suspend fun getAllTafsir(): TafsirResponse
 }
