@@ -43,6 +43,7 @@ import unsiq.mtqmn23.jadda.presentation.screen.quran.detail.DetailSurahScreen
 import unsiq.mtqmn23.jadda.presentation.screen.salat.SalatScreen
 import unsiq.mtqmn23.jadda.presentation.screen.salatpractice.SalatPracticeScreen
 import unsiq.mtqmn23.jadda.presentation.screen.splash.SplashScreen
+import unsiq.mtqmn23.jadda.presentation.screen.tafsir.TafsirScreen
 import unsiq.mtqmn23.jadda.presentation.screen.tajweed.TajweedScreen
 import unsiq.mtqmn23.jadda.presentation.screen.tajweeddetect.TajweedDetectScreen
 import unsiq.mtqmn23.jadda.presentation.ui.theme.JaddaTheme
@@ -109,11 +110,21 @@ class MainActivity : ComponentActivity() {
                                     },
                                     navigateToDetailTajweed = {
                                         navController.navigate(Screen.Tajweed.createRoute(it))
+                                    },
+                                    navigateToTafsir = {
+                                        navController.navigate(Screen.Tafsir.route)
                                     }
                                 )
                             }
                             composable(Screen.Watch.route) {
 
+                            }
+                            composable(Screen.Tafsir.route) {
+                                TafsirScreen(
+                                    navigateToBack = {
+                                        navController.navigateUp()
+                                    }
+                                )
                             }
                             composable(Screen.Quran.route) {
                                 QuranScreen(
