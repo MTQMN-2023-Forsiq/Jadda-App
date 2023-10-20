@@ -4,18 +4,24 @@ plugins {
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("kotlin-parcelize")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
     namespace = "unsiq.mtqmn23.jadda"
     compileSdk = 34
 
+    aaptOptions {
+        noCompress("tflite", ".tflite")
+    }
+
     defaultConfig {
         applicationId = "unsiq.mtqmn23.jadda"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 12
+        versionName = "1.1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -25,7 +31,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -41,6 +48,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -65,6 +73,8 @@ dependencies {
     implementation("androidx.media3:media3-common:1.1.1")
     implementation("androidx.media3:media3-ui:1.1.1")
     implementation("androidx.media3:media3-exoplayer:1.1.1")
+    implementation("com.google.firebase:firebase-crashlytics-ktx:18.4.3")
+    implementation("com.google.firebase:firebase-analytics-ktx:21.3.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

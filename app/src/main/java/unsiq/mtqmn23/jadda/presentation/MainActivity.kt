@@ -39,6 +39,7 @@ import unsiq.mtqmn23.jadda.presentation.screen.auth.register.RegisterScreen
 import unsiq.mtqmn23.jadda.presentation.screen.compass.CompassScreen
 import unsiq.mtqmn23.jadda.presentation.screen.hadist.HadistScreen
 import unsiq.mtqmn23.jadda.presentation.screen.home.HomeScreen
+import unsiq.mtqmn23.jadda.presentation.screen.leaderboard.LeaderboardSecreen
 import unsiq.mtqmn23.jadda.presentation.screen.onboarding.OnBoardingScreen
 import unsiq.mtqmn23.jadda.presentation.screen.profile.ProfileScreen
 import unsiq.mtqmn23.jadda.presentation.screen.quran.detail.DetailSurahScreen
@@ -153,6 +154,11 @@ class MainActivity : ComponentActivity() {
                                         navController.navigateUp()
                                     }
                                 )
+                            }
+                            composable(Screen.Ranking.route) {
+                                LeaderboardSecreen {
+
+                                }
                             }
                             composable(
                                 Screen.QuranDetail.route,

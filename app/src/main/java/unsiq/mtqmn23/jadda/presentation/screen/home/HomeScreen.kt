@@ -55,6 +55,8 @@ import unsiq.mtqmn23.jadda.presentation.screen.home.components.ItemTajweed
 import unsiq.mtqmn23.jadda.presentation.screen.home.components.RowType
 import unsiq.mtqmn23.jadda.presentation.ui.theme.BlueSky
 import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
+import unsiq.mtqmn23.jadda.util.Salat
+import unsiq.mtqmn23.jadda.util.getNearSalat
 import java.util.Locale
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -145,6 +147,13 @@ fun HomeContent(
     navigateToDetailTajweed: (id: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val listOfSalat = listOf(
+        Salat(salatDate.times.fajr, "Subuh"),
+        Salat(salatDate.times.dhuhr, "Dzuhur"),
+        Salat(salatDate.times.asr, "Ashar"),
+        Salat(salatDate.times.maghrib, "Maghrib"),
+        Salat(salatDate.times.isha, "Isya")
+    )
     LazyColumn(
         modifier = modifier
     ) {
@@ -157,8 +166,8 @@ fun HomeContent(
         item {
             HomeCard(
                 myLocationName = city,
-                nearPrayName = "Dzuhur",
-                nearPrayTime = salatDate.times.dhuhr ?: "-",
+                nearPrayName = listOfSalat.getNearSalat().name,
+                nearPrayTime = listOfSalat.getNearSalat().time ?: "-",
                 subuhTime = salatDate.times.fajr ?: "-",
                 dzuhurTime = salatDate.times.dhuhr ?: "-",
                 asharTime = salatDate.times.asr ?: "-",

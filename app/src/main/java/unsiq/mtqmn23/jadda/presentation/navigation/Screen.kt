@@ -21,4 +21,5 @@ sealed class Screen(val route: String) {
     object Hadist: Screen("hadist")
     object Tafsir : Screen("tafsir")
     object Compass : Screen("compass")
+    object Ranking : Screen("ranking")
 }

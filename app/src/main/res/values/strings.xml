@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Jadda</string>
+    <string name="model_name">kemenag.tflite</string>
 </resources>

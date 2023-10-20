@@ -2,6 +2,9 @@
 buildscript {
     dependencies {
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.46.1")
+        classpath("com.android.tools.build:gradle:3.4.0")
+        classpath("com.google.gms:google-services:4.4.0")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.9")
     }
 }
 plugins {

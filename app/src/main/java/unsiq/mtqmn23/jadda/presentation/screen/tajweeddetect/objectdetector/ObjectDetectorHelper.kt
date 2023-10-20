@@ -14,6 +14,7 @@ import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.objectdetector.ObjectDetectionResult
 import com.google.mediapipe.tasks.vision.objectdetector.ObjectDetector
 import timber.log.Timber
+import unsiq.mtqmn23.jadda.R
 
 class ObjectDetectorHelper(
     var threshold: Float = THRESHOLD_DEFAULT,
@@ -60,7 +61,7 @@ class ObjectDetectorHelper(
 
         val modelName =
             when (currentModel) {
-                MODEL_EFFICIENTDETV0 -> "model.tflite"
+                MODEL_EFFICIENTDETV0 -> context.resources.getString(R.string.model_name)
                 else -> "efficientdet-lite0.tflite"
             }
 
@@ -208,8 +209,8 @@ class ObjectDetectorHelper(
         const val DELEGATE_CPU = 0
         const val DELEGATE_GPU = 1
         const val MODEL_EFFICIENTDETV0 = 0
-        const val MAX_RESULTS_DEFAULT = 5
-        const val THRESHOLD_DEFAULT = 0.4F
+        const val MAX_RESULTS_DEFAULT = 8
+        const val THRESHOLD_DEFAULT = 0.3F
         const val OTHER_ERROR = 0
         const val GPU_ERROR = 1
 

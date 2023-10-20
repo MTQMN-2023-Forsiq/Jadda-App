@@ -26,7 +26,7 @@ class AuthRepositoryImpl @Inject constructor(
             }
 
         } catch (e: Exception) {
-            emit(Result.Error("Terjadi Kesalahan"))
+            emit(Result.Error("${e.message}"))
         }
     }
 
@@ -46,7 +46,7 @@ class AuthRepositoryImpl @Inject constructor(
                 emit(Result.Error(response.message))
             }
         } catch (e: Exception) {
-            emit(Result.Error("Terjadi Kesalahan"))
+            emit(Result.Error("${e.message}"))
         }
     }
 
