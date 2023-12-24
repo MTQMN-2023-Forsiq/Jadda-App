@@ -67,6 +67,7 @@ fun HomeScreen(
     navigateToPracticeSalat: () -> Unit,
     navigateToDetailTajweed: (id: String) -> Unit,
     navigateToHadist: () -> Unit,
+    navigateToRanking: () -> Unit,
     navigateToTafsir: () -> Unit,
     navigateToCompass: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
@@ -129,6 +130,7 @@ fun HomeScreen(
         navigateToTafsir = navigateToTafsir,
         navigateToHadist = navigateToHadist,
         navigateToCompass = navigateToCompass,
+        navigateToRanking = navigateToRanking,
     )
 }
 
@@ -141,6 +143,7 @@ fun HomeContent(
     navigateToTafsir: () -> Unit,
     navigateToHadist: () -> Unit,
     navigateToCompass: () -> Unit,
+    navigateToRanking: () -> Unit,
     expandableCardIds: SnapshotStateList<Int>,
     listTajweed: SnapshotStateList<TajweedDataItem>,
     onTajweedCardClick: (id: Int) -> Unit,
@@ -183,7 +186,7 @@ fun HomeContent(
                 navigateToCompass = navigateToCompass,
                 navigateToHadits = navigateToHadist,
                 navigateToPracticeSalat = navigateToPracticeSalat,
-                navigateToRanking = {},
+                navigateToRanking = navigateToRanking,
                 navigateToTajweedDetection = navigateToTajweedDetection,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )

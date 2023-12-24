@@ -7,6 +7,7 @@ import unsiq.mtqmn23.jadda.data.source.remote.response.DateResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.MovementAngleResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.ProfileItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.QuranDataItemResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.RankingItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TafsirDataItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedContentItemResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.TajweedDataItemResponse
@@ -18,6 +19,7 @@ import unsiq.mtqmn23.jadda.domain.model.profile.ProfileItem
 import unsiq.mtqmn23.jadda.domain.model.quran.DataSurah
 import unsiq.mtqmn23.jadda.domain.model.quran.QuranDataItem
 import unsiq.mtqmn23.jadda.domain.model.quran.VersesItem
+import unsiq.mtqmn23.jadda.domain.model.ranking.RankingItem
 import unsiq.mtqmn23.jadda.domain.model.salat.DataSalatItem
 import unsiq.mtqmn23.jadda.domain.model.salat.MovementAngle
 import unsiq.mtqmn23.jadda.domain.model.salat.SalatDate
@@ -178,6 +180,15 @@ fun ProfileItemResponse.toDomain(): ProfileItem{
         ranking = ranking,
         point = point,
         taskComplete = taskComplete,
+    )
+}
+
+fun RankingItemResponse.toDomain(): RankingItem {
+    return RankingItem(
+        userId = userId ?: 0,
+        name = name ?: "",
+        rangking = rangking ?: 0,
+        point = point ?: ""
     )
 }
 

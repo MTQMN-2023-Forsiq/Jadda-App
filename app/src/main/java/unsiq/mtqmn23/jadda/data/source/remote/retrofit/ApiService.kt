@@ -11,6 +11,7 @@ import unsiq.mtqmn23.jadda.data.source.remote.response.HadistResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.LoginResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.ProfileResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.QuranResponse
+import unsiq.mtqmn23.jadda.data.source.remote.response.RankingResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.RegisterResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.SalatResponse
 import unsiq.mtqmn23.jadda.data.source.remote.response.SalatScheduleResponse
@@ -70,4 +71,7 @@ interface ApiService {
 
     @GET("user")
     suspend fun getProfile(): ProfileResponse
+
+    @GET("leaderboard")
+    suspend fun getRanking(): RankingResponse
 }

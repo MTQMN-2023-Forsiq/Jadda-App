@@ -51,6 +51,7 @@ import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
 @Composable
 fun ProfileScreen(
     snackbarHostState: SnackbarHostState,
+    navigateToLeaderboard: () -> Unit,
     viewModel: ProfileViewModel = hiltViewModel(),
 ) {
     val activity = LocalContext.current as? Activity
@@ -98,7 +99,8 @@ fun ProfileScreen(
             ranking = state.profile.ranking ?: 0,
             onLogout = {
                 viewModel.onEvent(ProfileEvent.OnShowHideAlert(true))
-            }
+            },
+            navigateToLeaderboard = navigateToLeaderboard,
         )
     }
 
@@ -142,6 +144,7 @@ fun ProfileContent(
     taskCompleted: Int,
     ranking: Int,
     onLogout: () -> Unit,
+    navigateToLeaderboard: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -263,9 +266,7 @@ fun ProfileContent(
                     tint = Black,
                 )
             },
-            onClick = {
-
-            }
+            onClick = navigateToLeaderboard
         )
         IconTextButton(
             text = "Tentang Kami",

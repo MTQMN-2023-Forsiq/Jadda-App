@@ -26,6 +26,7 @@ import unsiq.mtqmn23.jadda.domain.model.salat.DataSalatItem
 import unsiq.mtqmn23.jadda.presentation.components.RoundedButton
 import unsiq.mtqmn23.jadda.presentation.screen.salat.components.ItemSalat
 import unsiq.mtqmn23.jadda.presentation.ui.theme.BlueSky
+import unsiq.mtqmn23.jadda.presentation.ui.theme.Green
 
 @Composable
 fun SalatScreen(
@@ -81,13 +82,14 @@ fun SalatContent(
                     onClick = {
                     }
                 )
+
             }
         }
         ExtendedFloatingActionButton(
             onClick = {
                 navigateToPractice(listSalat)
             },
-            containerColor = BlueSky,
+            containerColor = Green,
             text = {
                 Text("Praktik Sholat")
             },
